@@ -14,7 +14,7 @@ export default function Home() {
     { round: "Round 2", dates: "Apr 27 – May 10", notes: ["GAP", "Mother’s Day, May 10"] },
     { round: "Quarterfinals", dates: "May 11 – June 7", notes: ["Member-Member Weekend", "MDW, May 22–25"] },
     { round: "Semifinals", dates: "June 8 – June 28", notes: ["Juneteenth, June 19", "Fathers Day, June 21"] },
-    { round: "Final", dates: "June 29 – July 19", notes: ["4th of July"] },
+    { round: "Championship", dates: "June 29 – July 19", notes: ["4th of July"] },
   ];
 
   return (
@@ -111,25 +111,88 @@ export default function Home() {
 </header>
 
 
-      {/* RULES (TOP) */}
-     {/* RULES */}
 {/* RULES + GROUPME */}
-<section
-  style={{
-    marginTop: 22,
-    display: "grid",
-    gridTemplateColumns: "minmax(0, 1fr) 360px",
-    gap: 24,
-    alignItems: "start",
-  }}
->
-  {/* LEFT: RULES */}
+<style>{`
+  /* MOBILE DEFAULT: GroupMe on top, Rules below */
+  .rules-layout {
+    display: grid;
+    grid-template-areas:
+      "groupme"
+      "rules";
+    grid-template-columns: 1fr;
+    gap: 20px;
+    align-items: start;
+    margin-top: 22px;
+  }
+
+  /* DESKTOP: Rules left, GroupMe right */
+  @media (min-width: 980px) {
+    .rules-layout {
+      grid-template-areas: "rules groupme";
+      grid-template-columns: minmax(0, 1fr) 360px;
+      gap: 24px;
+    }
+  }
+
+  /* Mobile: keep GroupMe smaller */
+  .groupme-compact {
+    max-height: 320px;
+    overflow: hidden;
+  }
+
+  @media (min-width: 980px) {
+    .groupme-compact {
+      max-height: none;
+      overflow: visible;
+    }
+  }
+`}</style>
+
+<section className="rules-layout">
+  {/* GROUPME (TOP on mobile, RIGHT on desktop) */}
+  <aside style={{ gridArea: "groupme", alignSelf: "start" }}>
+    {/* If you want sticky on desktop later, we can add it after this compiles */}
+    <div
+      className="groupme-compact"
+      style={{
+        border: "1px solid #eee",
+        borderRadius: 14,
+        padding: 18,
+      }}
+    >
+      <h3 style={{ marginTop: 0, fontSize: 20, fontWeight: 900 }}>GroupMe Live Feed</h3>
+
+      <div style={{ marginTop: 8 }}>
+        <GroupMeFeed refreshSeconds={30} />
+      </div>
+
+      <a
+        href="PASTE_GROUPME_LINK_HERE"
+        target="_blank"
+        style={{
+          display: "block",
+          marginTop: 14,
+          border: "1px solid #ddd",
+          padding: "12px 14px",
+          borderRadius: 10,
+          textDecoration: "none",
+          fontWeight: 900,
+          textAlign: "center",
+        }}
+      >
+        Open GroupMe →
+      </a>
+    </div>
+  </aside>
+
+  {/* RULES */}
   <div
     style={{
       padding: 20,
       border: "1px solid #eee",
       borderRadius: 14,
-      minWidth: 0, // critical so left column doesn't force wrap
+      minWidth: 0,
+      gridArea: "rules",
     }}
   >
     <h2 style={{ margin: 0, fontSize: 24, fontWeight: 900 }}>Flynn Rules</h2>
@@ -171,45 +234,8 @@ export default function Home() {
       <div style={{ paddingLeft: 48 }}><b>8.6</b>&nbsp;&nbsp;Bad faith examples: non-responsive, long unavailability, or similar situations determined by Commissioner.</div>
     </div>
   </div>
-
-  {/* RIGHT: GROUPME */}
-  <aside style={{ alignSelf: "start", position: "sticky", top: 20 }}>
-    <div
-      style={{
-        border: "1px solid #eee",
-        borderRadius: 14,
-        padding: 18,
-        overflow: "hidden",
-      }}
-    >
-      <h3 style={{ marginTop: 0, fontSize: 20, fontWeight: 900 }}>
-        GroupMe Live Feed
-      </h3>
-
-      <div style={{ marginTop: 8 }}>
-        {/* This must exist already in your file */}
-        <GroupMeFeed refreshSeconds={30} />
-      </div>
-
-      <a
-        href="PASTE_GROUPME_LINK_HERE"
-        target="_blank"
-        style={{
-          display: "block",
-          marginTop: 14,
-          border: "1px solid #ddd",
-          padding: "12px 14px",
-          borderRadius: 10,
-          textDecoration: "none",
-          fontWeight: 900,
-          textAlign: "center",
-        }}
-      >
-        Open GroupMe →
-      </a>
-    </div>
-  </aside>
 </section>
+
 
 
 {/* EXPECTED SCHEDULE */}
