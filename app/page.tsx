@@ -1,7 +1,6 @@
 import Countdown from "./components/Countdown";
 import GroupMeFeed from "./components/GroupMeFeed";
 
-
 export default function Home() {
   const TOURNAMENT = {
     blindDrawDate: "March 31, 2026",
@@ -17,9 +16,57 @@ export default function Home() {
     { round: "Championship", dates: "June 29 – July 19", notes: ["4th of July"] },
   ];
 
+
+
   return (
     <main style={{ padding: 24, fontFamily: "system-ui", maxWidth: 980, margin: "0 auto" }}>
-  
+{/* HERO IMAGE */}
+<div
+  style={{
+    marginBottom: 24,
+    borderRadius: 16,
+    overflow: "hidden",
+    border: "1px solid #eee",
+    background: "#0f0f0f",
+  }}
+>
+ <picture>
+  {/* Desktop image */}
+  <source media="(min-width: 980px)" srcSet="/flynn-2026-desktop.png" />
+
+  {/* Mobile image fallback */}
+  <img
+    src="/flynn-2026.png"
+    alt="Spring Flynn 2026"
+    style={{
+      width: "100%",
+      height: "auto",
+      display: "block",
+    }}
+    className="hero-img"
+  />
+</picture>
+
+<style>{`
+  /* Mobile: crop nicely */
+  .hero-img {
+    height: 360px;
+    object-fit: cover;
+    object-position: center top;
+  }
+
+  /* Desktop: show full desktop banner */
+  @media (min-width: 980px) {
+    .hero-img {
+      height: 320px;
+      object-fit: cover;
+      object-position: center;
+    }
+  }
+`}</style>
+
+</div>
+
   <header style={{ marginBottom: 24 }}>
 
   <h1 style={{
@@ -160,7 +207,7 @@ export default function Home() {
         padding: 18,
       }}
     >
-      <h3 style={{ marginTop: 0, fontSize: 20, fontWeight: 900 }}>GroupMe Live Feed</h3>
+      <h3 style={{ marginTop: 0, fontSize: 20, fontWeight: 900 }}>Spring Flynn 2026 Live Feed</h3>
 
       <div style={{ marginTop: 8 }}>
         <GroupMeFeed refreshSeconds={30} />
@@ -201,7 +248,7 @@ export default function Home() {
       <div><b>1</b>&nbsp;&nbsp;Follow USGA rules.</div>
 
       <div style={{ marginTop: 10 }}><b>2</b>&nbsp;&nbsp;85% handicap allowance.</div>
-      <div style={{ paddingLeft: 28 }}><b>2.1</b>&nbsp;&nbsp;Hole handicap caps out at 1.5 strokes per hole</div>
+      <div style={{ paddingLeft: 28 }}><b>2.1</b>&nbsp;&nbsp;Hole handicap caps out at 1.5 strokes on a hole per player</div>
 
       <div style={{ marginTop: 10 }}>
         <b>3</b>&nbsp;&nbsp;Teams will be determined by blind draw on a date TBD. Each team will consist of one A player and one B player.
