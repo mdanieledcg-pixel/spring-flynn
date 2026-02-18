@@ -238,7 +238,14 @@ const mutedText: React.CSSProperties = { color: "rgba(255,255,255,0.85)" };
 >
 
 
-      <h3 style={{ marginTop: 0, fontSize: 20, fontWeight: 900 }}>
+      <h3
+  style={{
+    marginTop: 0,
+    fontSize: 20,
+    fontWeight: 900,
+    color: "#ffffff",
+  }}
+>
         Spring Flynn 2026 Live Feed
       </h3>
 
