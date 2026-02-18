@@ -1,5 +1,7 @@
 import Countdown from "./components/Countdown";
 import GroupMeFeed from "./components/GroupMeFeed";
+import { Analytics } from "@vercel/analytics/next";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 
 export default function Home() {
   const TOURNAMENT = {
@@ -16,6 +18,23 @@ export default function Home() {
     { round: "Championship", dates: "June 29 – July 19", notes: ["4th of July"] },
   ];
 
+const glassCard: React.CSSProperties = {
+  background: "rgba(0, 0, 0, 0.28)",
+  border: "1px solid rgba(255, 255, 255, 0.18)",
+  backdropFilter: "blur(8px)",
+  WebkitBackdropFilter: "blur(8px)",
+  color: "#ffffff",
+  borderRadius: 14,
+  boxShadow: "0 10px 26px rgba(0,0,0,0.22)",
+};
+
+const glassInner: React.CSSProperties = {
+  background: "rgba(255, 255, 255, 0.06)",
+  border: "1px solid rgba(255, 255, 255, 0.12)",
+  borderRadius: 12,
+};
+
+const mutedText: React.CSSProperties = { color: "rgba(255,255,255,0.85)" };
 
 
   return (
@@ -79,19 +98,23 @@ export default function Home() {
 
   {/* BLIND DRAW FEATURE CARD */}
   <div
-    style={{
-      background: "linear-gradient(135deg, #111, #2b2b2b)",
-      color: "white",
-      padding: 20,
-      borderRadius: 14,
-      boxShadow: "0 6px 18px rgba(0,0,0,0.25)",
-      display: "flex",
-      justifyContent: "space-between",
-      flexWrap: "wrap",
-      gap: 14,
-      alignItems: "center"
-    }}
-  >
+  style={{
+    borderTop: "6px solid #C5A253", // gold accent
+    background: "rgba(0, 0, 0, 0.28)",          // dark glass, not black
+    border: "1px solid rgba(255, 255, 255, 0.18)",
+    backdropFilter: "blur(8px)",
+    WebkitBackdropFilter: "blur(8px)",
+    color: "#ffffff",
+    padding: 20,
+    borderRadius: 14,
+    boxShadow: "0 10px 26px rgba(0,0,0,0.22)",
+    display: "flex",
+    justifyContent: "space-between",
+    flexWrap: "wrap",
+    gap: 14,
+    alignItems: "center",
+  }}
+>
     <div>
       <div style={{
         fontSize: 13,
@@ -115,7 +138,7 @@ export default function Home() {
         opacity: 0.9,
         marginTop: 4
       }}>
-        Franzones Pizzeria & Sportsbar
+        Franzone's Pizzeria & Sportsbar
       </div>
       <Countdown targetIso="2026-03-31T20:00:00-04:00" />
     </div>
@@ -192,22 +215,32 @@ export default function Home() {
       max-height: none;
       overflow: visible;
     }
-  }
+  }  
 `}</style>
 
 <section className="rules-layout">
   {/* GROUPME (TOP on mobile, RIGHT on desktop) */}
   <aside style={{ gridArea: "groupme", alignSelf: "start" }}>
-    {/* If you want sticky on desktop later, we can add it after this compiles */}
-    <div
-      className="groupme-compact"
-      style={{
-        border: "1px solid #eee",
-        borderRadius: 14,
-        padding: 18,
-      }}
-    >
-      <h3 style={{ marginTop: 0, fontSize: 20, fontWeight: 900 }}>Spring Flynn 2026 Live Feed</h3>
+<div
+  className="groupme-compact"
+  style={{
+    padding: 18,
+    borderRadius: 20,
+    background:
+      "linear-gradient(135deg, rgba(171,123,0,0.78), rgba(116,74,0,0.62))",
+    backdropFilter: "blur(8px)",
+    WebkitBackdropFilter: "blur(8px)",
+    border: "1px solid rgba(255,220,140,0.45)",
+    boxShadow:
+      "0 14px 40px rgba(0,0,0,0.28), inset 0 1px 0 rgba(255,255,255,0.18), inset 0 -18px 30px rgba(0,0,0,0.22)",
+    color: "rgba(15,15,15,0.92)",
+  }}
+>
+
+
+      <h3 style={{ marginTop: 0, fontSize: 20, fontWeight: 900 }}>
+        Spring Flynn 2026 Live Feed
+      </h3>
 
       <div style={{ marginTop: 8 }}>
         <GroupMeFeed refreshSeconds={30} />
@@ -219,12 +252,15 @@ export default function Home() {
         style={{
           display: "block",
           marginTop: 14,
-          border: "1px solid #ddd",
           padding: "12px 14px",
           borderRadius: 10,
           textDecoration: "none",
           fontWeight: 900,
           textAlign: "center",
+          background: "#0A2756",
+          color: "#ffffff",
+          border: "1px solid rgba(255,255,255,0.15)",
+          transition: "all 0.2s ease",
         }}
       >
         Open GroupMe →
@@ -235,13 +271,13 @@ export default function Home() {
   {/* RULES */}
   <div
     style={{
+      ...glassCard,
       padding: 20,
-      border: "1px solid #eee",
-      borderRadius: 14,
       minWidth: 0,
       gridArea: "rules",
     }}
   >
+
     <h2 style={{ margin: 0, fontSize: 24, fontWeight: 900 }}>Flynn Rules</h2>
 
     <div style={{ marginTop: 16, lineHeight: 1.7, fontSize: 16 }}>
@@ -287,12 +323,12 @@ export default function Home() {
 
 {/* EXPECTED SCHEDULE */}
 <section
-  style={{
-    marginTop: 24,
-    padding: 22,
-    border: "1px solid rgba(255,255,255,0.12)",
-    borderRadius: 14
-  }}
+style={{
+  ...glassCard,
+  marginTop: 24,
+  padding: 22,
+}}
+
 >
   <h2
     style={{
@@ -309,12 +345,11 @@ export default function Home() {
     {SCHEDULE.map((r) => (
       <div
         key={r.round}
-        style={{
-          padding: 20,
-          borderRadius: 12,
-          border: "1px solid rgba(255,255,255,0.12)",
-          background: "rgba(255,255,255,0.03)"
-        }}
+   style={{
+  ...glassInner,
+  padding: 18,
+}}
+
       >
         {/* Round Header */}
         <div
@@ -349,27 +384,12 @@ export default function Home() {
         {/* Notable Dates */}
         {r.notes?.length ? (
           <div style={{ marginTop: 16 }}>
-            <div
-              style={{
-                fontSize: 14,
-                fontWeight: 800,
-                color: "#dcdcdc",
-                marginBottom: 8,
-                letterSpacing: 0.4
-              }}
-            >
-              Notable Dates
-            </div>
+<div style={{ fontSize: 15, fontWeight: 900, color: "#fff", marginBottom: 8 }}>
+  Notable Dates
+</div>
 
-            <ul
-              style={{
-                margin: 0,
-                paddingLeft: 20,
-                lineHeight: 1.8,
-                fontSize: 16,
-                color: "#e8e8e8"
-              }}
-            >
+        <ul style={{ margin: 0, paddingLeft: 20, lineHeight: 1.8, fontSize: 16, ...mutedText }}>
+
               {r.notes.map((n, idx) => (
                 <li key={idx}>{n}</li>
               ))}
