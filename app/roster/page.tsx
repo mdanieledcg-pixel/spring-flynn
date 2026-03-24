@@ -2,7 +2,6 @@ type Player = {
   id: string;
   name: string;
   handicap_index?: number | null;
-  phone_number?: string | null;
 };
 
 export default async function RosterPage() {
@@ -36,49 +35,77 @@ export default async function RosterPage() {
     const players = (await res.json()) as Player[];
 
     return (
-      <main style={{ padding: 24, fontFamily: "system-ui" }}>
-        <h1 style={{ fontSize: 28, fontWeight: 700, marginBottom: 16 }}>
+      <main
+        style={{
+          padding: "32px 20px",
+          fontFamily: "system-ui",
+          maxWidth: 720,
+          margin: "0 auto",
+        }}
+      >
+        <h1
+          style={{
+            fontSize: 32,
+            fontWeight: 800,
+            marginBottom: 20,
+          }}
+        >
           Roster
         </h1>
 
-        {/* Header Row */}
         <div
           style={{
-            display: "grid",
-            gridTemplateColumns: "2fr 1fr",
-            fontWeight: 700,
-            marginBottom: 8,
-            borderBottom: "2px solid #ccc",
-            paddingBottom: 8,
+            border: "1px solid #d9d9d9",
+            borderRadius: 12,
+            overflow: "hidden",
+            backgroundColor: "#fff",
           }}
         >
-          <div>Name</div>
-          <div>HI</div>
-        </div>
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns: "1fr 90px",
+              padding: "12px 16px",
+              fontWeight: 700,
+              fontSize: 14,
+              letterSpacing: "0.02em",
+              backgroundColor: "#f5f5f5",
+              borderBottom: "1px solid #d9d9d9",
+            }}
+          >
+            <div>Name</div>
+            <div style={{ textAlign: "right" }}>HI</div>
+          </div>
 
-        {/* Players */}
-        <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-          {players.map((player) => (
+          {players.map((player, index) => (
             <div
               key={player.id}
               style={{
                 display: "grid",
-                gridTemplateColumns: "2fr 1fr",
-                padding: "10px 12px",
-                border: "1px solid #ddd",
-                borderRadius: 8,
-                background: "#fafafa",
+                gridTemplateColumns: "1fr 90px",
+                padding: "12px 16px",
+                borderBottom:
+                  index === players.length - 1 ? "none" : "1px solid #ececec",
+                fontSize: 16,
+                alignItems: "center",
               }}
             >
-              <div style={{ fontWeight: 500 }}>{player.name}</div>
-              <div style={{ textAlign: "right" }}>
+              <div>{player.name}</div>
+              <div style={{ textAlign: "right", fontVariantNumeric: "tabular-nums" }}>
                 {player.handicap_index ?? "-"}
               </div>
             </div>
           ))}
         </div>
 
-        <a href="/" style={{ display: "inline-block", marginTop: 20 }}>
+        <a
+          href="/"
+          style={{
+            display: "inline-block",
+            marginTop: 18,
+            textDecoration: "none",
+          }}
+        >
           ← Back
         </a>
       </main>
