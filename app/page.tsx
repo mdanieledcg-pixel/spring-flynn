@@ -14,7 +14,7 @@ export default function Home() {
     { round: "Round 1", dates: "April 1 – Apr 26", notes: ["GAP", "Easter, Apr 5", "Horrible weather"] },
     { round: "Round 2", dates: "Apr 27 – May 10", notes: ["GAP", "Mother’s Day, May 10"] },
     { round: "Quarterfinals", dates: "May 11 – June 7", notes: ["Member-Member Weekend", "MDW, May 22–25"] },
-    { round: "Semifinals", dates: "June 8 – June 28", notes: ["Juneteenth, June 19", "Fathers Day, June 21"] },
+    { round: "Semifinals", dates: "June 8 – June 28", notes: ["Member-Guest Weekend, June 25-27", "Juneteenth, June 19", "Fathers Day, June 21"] },
     { round: "Championship", dates: "June 29 – July 19", notes: ["4th of July"] },
   ];
 
