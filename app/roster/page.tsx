@@ -25,8 +25,8 @@ export default async function RosterPage() {
 
       return (
         <main style={{ padding: 24, fontFamily: "system-ui" }}>
-          <h1 style={{ fontSize: 28, fontWeight: 700 }}>Roster</h1>
-          <p style={{ color: "crimson" }}>Error: {text}</p>
+          <h1>Roster</h1>
+          <p style={{ color: "red" }}>Error: {text}</p>
           <a href="/">← Back</a>
         </main>
       );
@@ -39,8 +39,9 @@ export default async function RosterPage() {
         style={{
           padding: "32px 20px",
           fontFamily: "system-ui",
-          maxWidth: 720,
+          maxWidth: 700,
           margin: "0 auto",
+          color: "#111", // 👈 FORCE DARK TEXT
         }}
       >
         <h1
@@ -48,64 +49,67 @@ export default async function RosterPage() {
             fontSize: 32,
             fontWeight: 800,
             marginBottom: 20,
+            color: "#111",
           }}
         >
           Roster
         </h1>
 
+        {/* Table */}
         <div
           style={{
-            border: "1px solid #d9d9d9",
-            borderRadius: 12,
+            border: "1px solid #ccc",
+            borderRadius: 10,
             overflow: "hidden",
-            backgroundColor: "#fff",
+            backgroundColor: "#ffffff",
           }}
         >
+          {/* Header */}
           <div
             style={{
               display: "grid",
-              gridTemplateColumns: "1fr 90px",
+              gridTemplateColumns: "1fr 80px",
               padding: "12px 16px",
               fontWeight: 700,
+              backgroundColor: "#eaeaea",
+              color: "#000",
               fontSize: 14,
-              letterSpacing: "0.02em",
-              backgroundColor: "#f5f5f5",
-              borderBottom: "1px solid #d9d9d9",
             }}
           >
             <div>Name</div>
             <div style={{ textAlign: "right" }}>HI</div>
           </div>
 
+          {/* Rows */}
           {players.map((player, index) => (
             <div
               key={player.id}
               style={{
                 display: "grid",
-                gridTemplateColumns: "1fr 90px",
+                gridTemplateColumns: "1fr 80px",
                 padding: "12px 16px",
                 borderBottom:
-                  index === players.length - 1 ? "none" : "1px solid #ececec",
+                  index === players.length - 1 ? "none" : "1px solid #eee",
                 fontSize: 16,
-                alignItems: "center",
+                color: "#111",
+                backgroundColor: index % 2 === 0 ? "#fff" : "#f9f9f9",
               }}
             >
-              <div>{player.name}</div>
-              <div style={{ textAlign: "right", fontVariantNumeric: "tabular-nums" }}>
+              <div style={{ fontWeight: 500 }}>{player.name}</div>
+
+              <div
+                style={{
+                  textAlign: "right",
+                  fontWeight: 600,
+                }}
+              >
                 {player.handicap_index ?? "-"}
               </div>
             </div>
           ))}
         </div>
 
-        <a
-          href="/"
-          style={{
-            display: "inline-block",
-            marginTop: 18,
-            textDecoration: "none",
-          }}
-        >
+        <a href="/" style={{ marginTop: 16, display: "inline-block" }}>
           ← Back
         </a>
       </main>
@@ -113,8 +117,8 @@ export default async function RosterPage() {
   } catch (err) {
     return (
       <main style={{ padding: 24, fontFamily: "system-ui" }}>
-        <h1 style={{ fontSize: 28, fontWeight: 700 }}>Roster</h1>
-        <p style={{ color: "crimson" }}>
+        <h1>Roster</h1>
+        <p style={{ color: "red" }}>
           Error: {err instanceof Error ? err.message : "Unknown error"}
         </p>
         <a href="/">← Back</a>
