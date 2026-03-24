@@ -34,6 +34,16 @@ export default async function RosterPage() {
 
     const players = (await res.json()) as Player[];
 
+    const danName = "Dan Bevis";
+    const filtered = players.filter((p) => p.name !== danName);
+    const aPlayers = filtered.slice(0, 32);
+    const bPlayers = filtered.slice(32);
+
+    const dan = players.find((p) => p.name === danName);
+    if (dan) {
+      bPlayers.unshift(dan);
+    }
+
     return (
       <main
         style={{
@@ -41,7 +51,7 @@ export default async function RosterPage() {
           fontFamily: "system-ui",
           maxWidth: 700,
           margin: "0 auto",
-          color: "#111", // 👈 FORCE DARK TEXT
+          color: "#111",
         }}
       >
         <h1
@@ -55,7 +65,6 @@ export default async function RosterPage() {
           Roster
         </h1>
 
-        {/* Table */}
         <div
           style={{
             border: "1px solid #ccc",
@@ -64,7 +73,6 @@ export default async function RosterPage() {
             backgroundColor: "#ffffff",
           }}
         >
-          {/* Header */}
           <div
             style={{
               display: "grid",
@@ -80,8 +88,46 @@ export default async function RosterPage() {
             <div style={{ textAlign: "right" }}>HI</div>
           </div>
 
-          {/* Rows */}
-          {players.map((player, index) => (
+          {aPlayers.map((player, index) => (
+            <div
+              key={player.id}
+              style={{
+                display: "grid",
+                gridTemplateColumns: "1fr 80px",
+                padding: "12px 16px",
+                borderBottom: "1px solid #eee",
+                fontSize: 16,
+                color: "#111",
+                backgroundColor: index % 2 === 0 ? "#fff" : "#f9f9f9",
+              }}
+            >
+              <div style={{ fontWeight: 500 }}>{player.name}</div>
+              <div
+                style={{
+                  textAlign: "right",
+                  fontWeight: 600,
+                }}
+              >
+                {player.handicap_index ?? "-"}
+              </div>
+            </div>
+          ))}
+
+          <div
+            style={{
+              padding: "10px 16px",
+              backgroundColor: "#ddd",
+              fontWeight: 700,
+              fontSize: 13,
+              textTransform: "uppercase",
+              letterSpacing: "0.05em",
+              color: "#111",
+            }}
+          >
+            B Players
+          </div>
+
+          {bPlayers.map((player, index) => (
             <div
               key={player.id}
               style={{
@@ -89,14 +135,13 @@ export default async function RosterPage() {
                 gridTemplateColumns: "1fr 80px",
                 padding: "12px 16px",
                 borderBottom:
-                  index === players.length - 1 ? "none" : "1px solid #eee",
+                  index === bPlayers.length - 1 ? "none" : "1px solid #eee",
                 fontSize: 16,
                 color: "#111",
                 backgroundColor: index % 2 === 0 ? "#fff" : "#f9f9f9",
               }}
             >
               <div style={{ fontWeight: 500 }}>{player.name}</div>
-
               <div
                 style={{
                   textAlign: "right",
