@@ -115,7 +115,15 @@ export default async function RosterPage() {
                 backgroundColor: index % 2 === 0 ? "#fff" : "#f9f9f9",
               }}
             >
-              <div style={{ fontWeight: 500 }}>{player.name}</div>
+              <div style={{ fontWeight: 500 }}>
+                {player.name}
+                {(player.name === "Dan Bevis" ||
+                  player.name === "Bobby Taylor") && (
+                  <span style={{ marginLeft: 6, color: "red", fontSize: 13 }}>
+                    (Defending Champ)
+                  </span>
+                )}
+              </div>
               <div style={{ textAlign: "right", fontWeight: 600 }}>
                 {player.handicap_index ?? "-"}
               </div>
@@ -153,8 +161,8 @@ export default async function RosterPage() {
               <div style={{ fontWeight: 500 }}>
                 {player.name}
                 {(player.name === "Dan Bevis" ||
-                player.name === "Bobby Taylor") && (
-                <span style={{ marginLeft: 6, color: "red", fontSize: 13 }}>
+                  player.name === "Bobby Taylor") && (
+                  <span style={{ marginLeft: 6, color: "red", fontSize: 13 }}>
                     (Defending Champ)
                   </span>
                 )}
