@@ -254,7 +254,7 @@ const mutedText: React.CSSProperties = { color: "rgba(255,255,255,0.85)" };
       </div>
 
       <a
-        href="PASTE_GROUPME_LINK_HERE"
+        href="https://groupme.com/join_group/113198173/Ihi1Y7VC"
         target="_blank"
         style={{
           display: "block",
