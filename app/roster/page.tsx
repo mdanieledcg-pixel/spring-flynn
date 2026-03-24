@@ -3,70 +3,81 @@ import { createClient } from "@supabase/supabase-js";
 type Player = {
   id: string;
   name: string;
-  ghin: string | null;
+  /*ghin: string | null; */
   handicap_index: number | null;
   phone_number: string | null;
 };
 
 export default async function RosterPage() {
-  const supabase = createClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-  );
+  const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 
-  const { data, error } = await supabase
-    .from("players")
-    .select("id,name,ghin,handicap_index,phone_number")
-    .order("name", { ascending: true });
-
-  if (error) {
+  if (!url) {
     return (
       <main style={{ padding: 24, fontFamily: "system-ui" }}>
         <h1 style={{ fontSize: 28, fontWeight: 700 }}>Roster</h1>
-        <p style={{ color: "crimson" }}>Error: {error.message}</p>
+        <p style={{ color: "crimson" }}>Error: Missing NEXT_PUBLIC_SUPABASE_URL</p>
         <a href="/">← Back</a>
       </main>
     );
   }
 
-  const players = (data ?? []) as Player[];
+  if (!key) {
+    return (
+      <main style={{ padding: 24, fontFamily: "system-ui" }}>
+        <h1 style={{ fontSize: 28, fontWeight: 700 }}>Roster</h1>
+        <p style={{ color: "crimson" }}>Error: Missing NEXT_PUBLIC_SUPABASE_ANON_KEY</p>
+        <a href="/">← Back</a>
+      </main>
+    );
+  }
 
-  return (
-    <main style={{ padding: 24, fontFamily: "system-ui" }}>
-      <h1 style={{ fontSize: 28, fontWeight: 700 }}>Roster</h1>
+  try {
+    const supabase = createClient(url, key);
 
-      <div style={{ marginTop: 12, display: "flex", gap: 12 }}>
-        <a href="/roster/add" style={{ textDecoration: "none" }}>➕ Add Player</a>
-        <a href="/" style={{ textDecoration: "none" }}>← Home</a>
-      </div>
+    const { data, error } = await supabase
+      .from("players")
+      .select("id,name,ghin,handicap_index,phone_number")
+      .order("name", { ascending: true });
 
-      <table style={{ marginTop: 16, width: "100%", borderCollapse: "collapse" }}>
-        <thead>
-          <tr>
-            <th style={{ textAlign: "left", padding: 10, borderBottom: "1px solid #eee" }}>Name</th>
-            <th style={{ textAlign: "left", padding: 10, borderBottom: "1px solid #eee" }}>GHIN</th>
-            <th style={{ textAlign: "left", padding: 10, borderBottom: "1px solid #eee" }}>Index</th>
-            <th style={{ textAlign: "left", padding: 10, borderBottom: "1px solid #eee" }}>Phone</th>
-          </tr>
-        </thead>
-        <tbody>
-          {players.map((p) => (
-            <tr key={p.id}>
-              <td style={{ padding: 10, borderBottom: "1px solid #f3f3f3" }}>{p.name}</td>
-              <td style={{ padding: 10, borderBottom: "1px solid #f3f3f3" }}>{p.ghin ?? "-"}</td>
-              <td style={{ padding: 10, borderBottom: "1px solid #f3f3f3" }}>
-                {typeof p.handicap_index === "number" ? p.handicap_index.toFixed(1) : "-"}
-              </td>
-              <td style={{ padding: 10, borderBottom: "1px solid #f3f3f3" }}>{p.phone_number ?? "-"}</td>
-            </tr>
-          ))}
-          {players.length === 0 && (
-            <tr>
-              <td colSpan={4} style={{ padding: 10 }}>No players yet.</td>
-            </tr>
-          )}
-        </tbody>
-      </table>
-    </main>
-  );
+    if (error) {
+      return (
+        <main style={{ padding: 24, fontFamily: "system-ui" }}>
+          <h1 style={{ fontSize: 28, fontWeight: 700 }}>Roster</h1>
+          <p style={{ color: "crimson" }}>Error: {error.message}</p>
+          <a href="/">← Back</a>
+        </main>
+      );
+    }
+
+    const players = (data ?? []) as Player[];
+
+    return (
+      <main style={{ padding: 24, fontFamily: "system-ui" }}>
+        <h1 style={{ fontSize: 28, fontWeight: 700 }}>Roster</h1>
+        {players.length === 0 ? (
+          <p>No players found.</p>
+        ) : (
+          <ul>
+            {players.map((player) => (
+              <li key={player.id}>
+                {player.name}
+              </li>
+            ))}
+          </ul>
+        )}
+        <a href="/">← Back</a>
+      </main>
+    );
+  } catch (err) {
+    return (
+      <main style={{ padding: 24, fontFamily: "system-ui" }}>
+        <h1 style={{ fontSize: 28, fontWeight: 700 }}>Roster</h1>
+        <p style={{ color: "crimson" }}>
+          Error: {err instanceof Error ? err.message : "Unknown error"}
+        </p>
+        <a href="/">← Back</a>
+      </main>
+    );
+  }
 }
