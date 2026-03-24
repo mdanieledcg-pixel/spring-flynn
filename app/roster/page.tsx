@@ -11,7 +11,7 @@ export default async function RosterPage() {
 
   try {
     const res = await fetch(
-      `${url}/rest/v1/players?select=id,name,handicap_index,phone_number&order=name.asc`,
+      `${url}/rest/v1/players?select=id,name,handicap_index&order=handicap_index.asc.nullslast`,
       {
         headers: {
           apikey: key,
@@ -37,25 +37,50 @@ export default async function RosterPage() {
 
     return (
       <main style={{ padding: 24, fontFamily: "system-ui" }}>
-        <h1 style={{ fontSize: 28, fontWeight: 700 }}>Roster</h1>
+        <h1 style={{ fontSize: 28, fontWeight: 700, marginBottom: 16 }}>
+          Roster
+        </h1>
 
-        {players.length === 0 ? (
-          <p>No players found.</p>
-        ) : (
-          <ul style={{ paddingLeft: 20 }}>
-            {players.map((player) => (
-              <li key={player.id} style={{ marginBottom: 8 }}>
-                <strong>{player.name}</strong>
-                {player.handicap_index !== null &&
-                player.handicap_index !== undefined
-                  ? ` — HI: ${player.handicap_index}`
-                  : ""}
-              </li>
-            ))}
-          </ul>
-        )}
+        {/* Header Row */}
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "2fr 1fr",
+            fontWeight: 700,
+            marginBottom: 8,
+            borderBottom: "2px solid #ccc",
+            paddingBottom: 8,
+          }}
+        >
+          <div>Name</div>
+          <div>HI</div>
+        </div>
 
-        <a href="/">← Back</a>
+        {/* Players */}
+        <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+          {players.map((player) => (
+            <div
+              key={player.id}
+              style={{
+                display: "grid",
+                gridTemplateColumns: "2fr 1fr",
+                padding: "10px 12px",
+                border: "1px solid #ddd",
+                borderRadius: 8,
+                background: "#fafafa",
+              }}
+            >
+              <div style={{ fontWeight: 500 }}>{player.name}</div>
+              <div style={{ textAlign: "right" }}>
+                {player.handicap_index ?? "-"}
+              </div>
+            </div>
+          ))}
+        </div>
+
+        <a href="/" style={{ display: "inline-block", marginTop: 20 }}>
+          ← Back
+        </a>
       </main>
     );
   } catch (err) {
