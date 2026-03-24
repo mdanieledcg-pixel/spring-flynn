@@ -152,8 +152,9 @@ export default async function RosterPage() {
             >
               <div style={{ fontWeight: 500 }}>
                 {player.name}
-                {player.name === "Dan Bevis" && (
-                  <span style={{ marginLeft: 6, color: "red", fontSize: 13 }}>
+                {(player.name === "Dan Bevis" ||
+                player.name === "Bobby Taylor") && (
+                <span style={{ marginLeft: 6, color: "red", fontSize: 13 }}>
                     (Defending Champ)
                   </span>
                 )}
