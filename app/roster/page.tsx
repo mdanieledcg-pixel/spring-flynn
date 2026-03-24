@@ -1,24 +1,38 @@
-import { createClient } from "@supabase/supabase-js";
-
-type Player = {
-  id: string;
-  name: string;
-  ghin: string | null;
-  handicap_index: number | null;
-  phone_number: string | null;
-};
-
 export default async function RosterPage() {
-  const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
-  const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+  const url = process.env.NEXT_PUBLIC_SUPABASE_URL!;
+  const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
 
-  return (
-    <main style={{ padding: 24, fontFamily: "system-ui" }}>
-      <h1 style={{ fontSize: 28, fontWeight: 700 }}>Roster</h1>
-      <p>Supabase URL present: {url ? "yes" : "no"}</p>
-      <p>Supabase key present: {key ? "yes" : "no"}</p>
-      <p>Supabase URL value: {url || "missing"}</p>
-      <a href="/">← Back</a>
-    </main>
-  );
+  try {
+    const res = await fetch(`${url}/rest/v1/players?select=id,name`, {
+      headers: {
+        apikey: key,
+        Authorization: `Bearer ${key}`,
+      },
+      cache: "no-store",
+    });
+
+    const text = await res.text();
+
+    return (
+      <main style={{ padding: 24, fontFamily: "system-ui" }}>
+        <h1 style={{ fontSize: 28, fontWeight: 700 }}>Roster</h1>
+        <p>Status: {res.status}</p>
+        <p>OK: {res.ok ? "yes" : "no"}</p>
+        <pre style={{ whiteSpace: "pre-wrap", overflowWrap: "anywhere" }}>
+          {text}
+        </pre>
+        <a href="/">← Back</a>
+      </main>
+    );
+  } catch (err) {
+    return (
+      <main style={{ padding: 24, fontFamily: "system-ui" }}>
+        <h1 style={{ fontSize: 28, fontWeight: 700 }}>Roster</h1>
+        <p style={{ color: "crimson" }}>
+          Direct fetch error: {err instanceof Error ? err.message : "Unknown error"}
+        </p>
+        <a href="/">← Back</a>
+      </main>
+    );
+  }
 }
