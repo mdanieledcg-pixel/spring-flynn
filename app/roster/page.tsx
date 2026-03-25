@@ -81,7 +81,7 @@ export default async function RosterPage() {
           <div
             style={{
               display: "grid",
-              gridTemplateColumns: "1fr 140px 160px",
+              gridTemplateColumns: "1fr 90px 140px"             
               padding: "12px 16px",
               fontWeight: 700,
               backgroundColor: "#eaeaea",
@@ -110,7 +110,7 @@ export default async function RosterPage() {
               key={player.id}
               style={{
                 display: "grid",
-                gridTemplateColumns: "1fr 140px 160px",
+                gridTemplateColumns: "1fr 90px 140px"
                 padding: "12px 16px",
                 borderBottom: "1px solid #eee",
                 fontSize: 16,
@@ -167,7 +167,7 @@ export default async function RosterPage() {
               key={player.id}
               style={{
                 display: "grid",
-                gridTemplateColumns: "1fr 140px 160px",
+                gridTemplateColumns: "1fr 90px 140px"
                 padding: "12px 16px",
                 borderBottom:
                   index === bPlayers.length - 1 ? "none" : "1px solid #eee",
