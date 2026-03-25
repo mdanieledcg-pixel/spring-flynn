@@ -252,13 +252,13 @@ export default async function RosterPage() {
 
           @media (max-width: 700px) {
             .roster-header {
-              grid-template-columns: minmax(0, 1fr) 52px 104px;
+              grid-template-columns: minmax(0, 1fr) 48px 130px;
               font-size: 13px;
               padding: 10px 12px;
             }
 
             .roster-row {
-              grid-template-columns: minmax(0, 1fr) 52px 104px;
+              grid-template-columns: minmax(0, 1fr) 48px 130px;
               padding: 10px 12px;
               font-size: 14px;
             }
