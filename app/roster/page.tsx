@@ -88,7 +88,13 @@ export default async function RosterPage() {
           color: "#111",
         }}
       >
-        <h1 style={{ fontSize: 32, fontWeight: 800, marginBottom: 20 }}>
+        <h1
+          style={{
+            fontSize: 32,
+            fontWeight: 800,
+            marginBottom: 20,
+          }}
+        >
           Roster
         </h1>
 
@@ -100,7 +106,6 @@ export default async function RosterPage() {
             backgroundColor: "#ffffff",
           }}
         >
-          {/* HEADER */}
           <div className="roster-header">
             <div>Player</div>
             <div className="hi-header">
@@ -110,7 +115,6 @@ export default async function RosterPage() {
             <div className="phone-header">Phone</div>
           </div>
 
-          {/* A PLAYERS */}
           <div className="section-label">A Players</div>
 
           {aPlayers.map((player, index) => (
@@ -148,7 +152,6 @@ export default async function RosterPage() {
             </div>
           ))}
 
-          {/* B PLAYERS */}
           <div className="section-label">B Players</div>
 
           {bPlayers.map((player, index) => (
@@ -195,44 +198,45 @@ export default async function RosterPage() {
         <style>{`
           .roster-header {
             display: grid;
-            grid-template-columns: minmax(0, 260px) 80px 140px;
+            grid-template-columns: 380px 110px 140px;
             padding: 12px 16px;
             font-weight: 700;
             background-color: #eaeaea;
             font-size: 14px;
+            align-items: center;
+            justify-content: center;
+            column-gap: 0;
           }
 
           .roster-row {
             display: grid;
-            grid-template-columns: minmax(0, 260px) 80px 140px;
+            grid-template-columns: 380px 110px 140px;
             padding: 12px 16px;
             font-size: 16px;
             align-items: center;
+            justify-content: center;
+            column-gap: 0;
           }
 
-          .section-label {
-            padding: 10px 16px;
-            background-color: #d4d4d4;
-            font-weight: 700;
-            font-size: 13px;
-            text-transform: uppercase;
-            text-align: center; /* 🔥 THIS CENTERS IT */
+          .player-cell {
+            min-width: 0;
+            padding-right: 10px;
           }
 
           .player-name {
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
+            font-weight: 500;
+            line-height: 1.2;
           }
 
           .champ-note {
+            margin-top: 3px;
             font-size: 12px;
             color: red;
-            margin-top: 3px;
+            line-height: 1.2;
           }
 
-          .hi-cell,
-          .hi-header {
+          .hi-header,
+          .hi-cell {
             text-align: center;
           }
 
@@ -247,22 +251,79 @@ export default async function RosterPage() {
           .phone-link {
             color: #0070f3;
             text-decoration: none;
+            font-weight: 500;
           }
 
-          .hi-mobile { display: none; }
-          .hi-desktop { display: inline; }
+          .section-label {
+            padding: 10px 16px;
+            background-color: #d4d4d4;
+            font-weight: 700;
+            font-size: 13px;
+            text-transform: uppercase;
+            text-align: center;
+          }
+
+          .hi-mobile {
+            display: none;
+          }
+
+          .hi-desktop {
+            display: inline;
+          }
 
           @media (max-width: 700px) {
             .roster-header {
-              grid-template-columns: minmax(0, 180px) 50px 140px;
+              grid-template-columns: minmax(0, 1fr) 50px 110px;
+              font-size: 13px;
+              padding: 10px 12px;
+              column-gap: 4px;
             }
 
             .roster-row {
-              grid-template-columns: minmax(0, 180px) 50px 140px;
+              grid-template-columns: minmax(0, 1fr) 50px 110px;
+              padding: 10px 12px;
+              font-size: 14px;
+              column-gap: 4px;
             }
 
-            .hi-mobile { display: inline; }
-            .hi-desktop { display: none; }
+            .player-cell {
+              padding-right: 8px;
+            }
+
+            .section-label {
+              padding: 9px 12px;
+              font-size: 12px;
+            }
+
+            .hi-mobile {
+              display: inline;
+            }
+
+            .hi-desktop {
+              display: none;
+            }
+
+            .champ-note {
+              font-size: 11px;
+            }
+
+            .phone-header {
+              text-align: center;
+            }
+
+            .phone-cell {
+              text-align: right;
+            }
+          }
+
+          @media (max-width: 520px) {
+            .roster-header {
+              grid-template-columns: minmax(0, 1fr) 48px 105px;
+            }
+
+            .roster-row {
+              grid-template-columns: minmax(0, 1fr) 48px 105px;
+            }
           }
         `}</style>
       </main>
