@@ -273,21 +273,21 @@ export default async function RosterPage() {
 
           @media (max-width: 700px) {
             .roster-header {
-              grid-template-columns: minmax(0, 200px) 42px 130px;          
+              grid-template-columns: minmax(0, 190px) 42px 130px;
               font-size: 13px;
               padding: 10px 12px;
               column-gap: 2px;
             }
 
             .roster-row {
-              grid-template-columns: minmax(0, 200px) 42px 130px;
+              grid-template-columns: minmax(0, 190px) 42px 130px;
               padding: 10px 12px;
               font-size: 14px;
               column-gap: 2px;
             }
 
             .player-cell {
-              padding-right: 8px;
+              padding-right: 6px;
             }
 
             .section-label {
@@ -313,16 +313,6 @@ export default async function RosterPage() {
 
             .phone-cell {
               text-align: right;
-            }
-          }
-
-          @media (max-width: 520px) {
-            .roster-header {
-              grid-template-columns: minmax(0, 1fr) 48px 105px;
-            }
-
-            .roster-row {
-              grid-template-columns: minmax(0, 1fr) 48px 105px;
             }
           }
         `}</style>
