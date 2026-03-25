@@ -7,7 +7,11 @@ type Player = {
 
 function getPhoneHref(phone: string) {
   const digits = phone.replace(/\D/g, "");
-  return `sms:${digits}`;
+  return digits ? `sms:${digits}` : "#";
+}
+
+function formatHandicapIndex(value?: number | null) {
+  return typeof value === "number" ? value.toFixed(1) : "-";
 }
 
 export default async function RosterPage() {
@@ -81,7 +85,7 @@ export default async function RosterPage() {
           <div
             style={{
               display: "grid",
-              gridTemplateColumns: "1fr 90px 140px",             
+              gridTemplateColumns: "1fr 90px 140px",
               padding: "12px 16px",
               fontWeight: 700,
               backgroundColor: "#eaeaea",
@@ -128,7 +132,7 @@ export default async function RosterPage() {
               </div>
 
               <div style={{ textAlign: "right", fontWeight: 600 }}>
-                {player.handicap_index ?? "-"}
+                {formatHandicapIndex(player.handicap_index)}
               </div>
 
               <div style={{ textAlign: "right" }}>
@@ -186,7 +190,7 @@ export default async function RosterPage() {
               </div>
 
               <div style={{ textAlign: "right", fontWeight: 600 }}>
-                {player.handicap_index ?? "-"}
+                {formatHandicapIndex(player.handicap_index)}
               </div>
 
               <div style={{ textAlign: "right" }}>
