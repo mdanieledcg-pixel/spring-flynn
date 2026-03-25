@@ -82,10 +82,11 @@ export default async function RosterPage() {
             backgroundColor: "#ffffff",
           }}
         >
+          {/* HEADER */}
           <div
             style={{
               display: "grid",
-              gridTemplateColumns: "1fr 90px 140px",
+              gridTemplateColumns: "minmax(0,1fr) 60px 120px",
               padding: "12px 16px",
               fontWeight: 700,
               backgroundColor: "#eaeaea",
@@ -93,10 +94,11 @@ export default async function RosterPage() {
             }}
           >
             <div>Player</div>
-            <div style={{ textAlign: "right" }}>Handicap Index</div>
+            <div style={{ textAlign: "center" }}>HI</div>
             <div style={{ textAlign: "right" }}>Phone</div>
           </div>
 
+          {/* A PLAYERS */}
           <div
             style={{
               padding: "10px 16px",
@@ -114,7 +116,7 @@ export default async function RosterPage() {
               key={player.id}
               style={{
                 display: "grid",
-                gridTemplateColumns: "1fr 90px 140px",
+                gridTemplateColumns: "minmax(0,1fr) 60px 120px",
                 padding: "12px 16px",
                 borderBottom: "1px solid #eee",
                 fontSize: 16,
@@ -131,7 +133,7 @@ export default async function RosterPage() {
                 )}
               </div>
 
-              <div style={{ textAlign: "right", fontWeight: 600 }}>
+              <div style={{ textAlign: "center", fontWeight: 600 }}>
                 {formatHandicapIndex(player.handicap_index)}
               </div>
 
@@ -154,6 +156,7 @@ export default async function RosterPage() {
             </div>
           ))}
 
+          {/* B PLAYERS */}
           <div
             style={{
               padding: "10px 16px",
@@ -171,7 +174,7 @@ export default async function RosterPage() {
               key={player.id}
               style={{
                 display: "grid",
-                gridTemplateColumns: "1fr 90px 140px",
+                gridTemplateColumns: "minmax(0,1fr) 60px 120px",
                 padding: "12px 16px",
                 borderBottom:
                   index === bPlayers.length - 1 ? "none" : "1px solid #eee",
@@ -189,7 +192,7 @@ export default async function RosterPage() {
                 )}
               </div>
 
-              <div style={{ textAlign: "right", fontWeight: 600 }}>
+              <div style={{ textAlign: "center", fontWeight: 600 }}>
                 {formatHandicapIndex(player.handicap_index)}
               </div>
 
