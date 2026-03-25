@@ -14,6 +14,10 @@ function formatHandicapIndex(value?: number | null) {
   return typeof value === "number" ? value.toFixed(1) : "-";
 }
 
+function isDefendingChamp(name: string) {
+  return name === "Dan Bevis" || name === "Bobby Taylor";
+}
+
 export default async function RosterPage() {
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL!;
   const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
@@ -59,7 +63,7 @@ export default async function RosterPage() {
         style={{
           padding: "32px 20px",
           fontFamily: "system-ui",
-          maxWidth: 900,
+          maxWidth: 980,
           margin: "0 auto",
           color: "#111",
         }}
@@ -83,61 +87,39 @@ export default async function RosterPage() {
           }}
         >
           {/* HEADER */}
-          <div
-            style={{
-              display: "grid",
-              gridTemplateColumns: "minmax(0,1fr) 60px 120px",
-              padding: "12px 16px",
-              fontWeight: 700,
-              backgroundColor: "#eaeaea",
-              fontSize: 14,
-            }}
-          >
+          <div className="roster-header">
             <div>Player</div>
-            <div style={{ textAlign: "center" }}>HI</div>
-            <div style={{ textAlign: "right" }}>Phone</div>
+            <div className="hi-header">
+              <span className="hi-mobile">HI</span>
+              <span className="hi-desktop">Handicap Index</span>
+            </div>
+            <div className="phone-header">Phone</div>
           </div>
 
           {/* A PLAYERS */}
-          <div
-            style={{
-              padding: "10px 16px",
-              backgroundColor: "#d4d4d4",
-              fontWeight: 700,
-              fontSize: 13,
-              textTransform: "uppercase",
-            }}
-          >
-            A Players
-          </div>
+          <div className="section-label">A Players</div>
 
           {aPlayers.map((player, index) => (
             <div
               key={player.id}
+              className="roster-row"
               style={{
-                display: "grid",
-                gridTemplateColumns: "minmax(0,1fr) 60px 120px",
-                padding: "12px 16px",
-                borderBottom: "1px solid #eee",
-                fontSize: 16,
                 backgroundColor: index % 2 === 0 ? "#fff" : "#f9f9f9",
+                borderBottom: "1px solid #eee",
               }}
             >
-              <div style={{ fontWeight: 500 }}>
-                {player.name}
-                {(player.name === "Dan Bevis" ||
-                  player.name === "Bobby Taylor") && (
-                  <span style={{ marginLeft: 6, color: "red", fontSize: 13 }}>
-                    (Defending Champ)
-                  </span>
+              <div className="player-cell">
+                <div style={{ fontWeight: 500 }}>{player.name}</div>
+                {isDefendingChamp(player.name) && (
+                  <div className="champ-note">(Defending Champ)</div>
                 )}
               </div>
 
-              <div style={{ textAlign: "center", fontWeight: 600 }}>
+              <div className="hi-cell">
                 {formatHandicapIndex(player.handicap_index)}
               </div>
 
-              <div style={{ textAlign: "right" }}>
+              <div className="phone-cell">
                 {player.phone_number ? (
                   <a
                     href={getPhoneHref(player.phone_number)}
@@ -157,46 +139,30 @@ export default async function RosterPage() {
           ))}
 
           {/* B PLAYERS */}
-          <div
-            style={{
-              padding: "10px 16px",
-              backgroundColor: "#d4d4d4",
-              fontWeight: 700,
-              fontSize: 13,
-              textTransform: "uppercase",
-            }}
-          >
-            B Players
-          </div>
+          <div className="section-label">B Players</div>
 
           {bPlayers.map((player, index) => (
             <div
               key={player.id}
+              className="roster-row"
               style={{
-                display: "grid",
-                gridTemplateColumns: "minmax(0,1fr) 60px 120px",
-                padding: "12px 16px",
+                backgroundColor: index % 2 === 0 ? "#fff" : "#f9f9f9",
                 borderBottom:
                   index === bPlayers.length - 1 ? "none" : "1px solid #eee",
-                fontSize: 16,
-                backgroundColor: index % 2 === 0 ? "#fff" : "#f9f9f9",
               }}
             >
-              <div style={{ fontWeight: 500 }}>
-                {player.name}
-                {(player.name === "Dan Bevis" ||
-                  player.name === "Bobby Taylor") && (
-                  <span style={{ marginLeft: 6, color: "red", fontSize: 13 }}>
-                    (Defending Champ)
-                  </span>
+              <div className="player-cell">
+                <div style={{ fontWeight: 500 }}>{player.name}</div>
+                {isDefendingChamp(player.name) && (
+                  <div className="champ-note">(Defending Champ)</div>
                 )}
               </div>
 
-              <div style={{ textAlign: "center", fontWeight: 600 }}>
+              <div className="hi-cell">
                 {formatHandicapIndex(player.handicap_index)}
               </div>
 
-              <div style={{ textAlign: "right" }}>
+              <div className="phone-cell">
                 {player.phone_number ? (
                   <a
                     href={getPhoneHref(player.phone_number)}
@@ -219,6 +185,96 @@ export default async function RosterPage() {
         <a href="/" style={{ marginTop: 16, display: "inline-block" }}>
           ← Back
         </a>
+
+        <style>{`
+          .roster-header {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) 120px 130px;
+            padding: 12px 16px;
+            font-weight: 700;
+            background-color: #eaeaea;
+            font-size: 14px;
+            align-items: center;
+            column-gap: 8px;
+          }
+
+          .roster-row {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) 120px 130px;
+            padding: 12px 16px;
+            font-size: 16px;
+            align-items: center;
+            column-gap: 8px;
+          }
+
+          .player-cell {
+            min-width: 0;
+          }
+
+          .champ-note {
+            margin-top: 3px;
+            font-size: 12px;
+            color: red;
+            line-height: 1.2;
+          }
+
+          .hi-header,
+          .hi-cell {
+            text-align: center;
+          }
+
+          .phone-header,
+          .phone-cell {
+            text-align: center;
+          }
+
+          .section-label {
+            padding: 10px 16px;
+            background-color: #d4d4d4;
+            font-weight: 700;
+            font-size: 13px;
+            text-transform: uppercase;
+          }
+
+          .hi-mobile {
+            display: none;
+          }
+
+          .hi-desktop {
+            display: inline;
+          }
+
+          @media (max-width: 700px) {
+            .roster-header {
+              grid-template-columns: minmax(0, 1fr) 56px 96px;
+              font-size: 13px;
+              padding: 10px 12px;
+            }
+
+            .roster-row {
+              grid-template-columns: minmax(0, 1fr) 56px 96px;
+              padding: 10px 12px;
+              font-size: 14px;
+            }
+
+            .section-label {
+              padding: 9px 12px;
+              font-size: 12px;
+            }
+
+            .hi-mobile {
+              display: inline;
+            }
+
+            .hi-desktop {
+              display: none;
+            }
+
+            .champ-note {
+              font-size: 11px;
+            }
+          }
+        `}</style>
       </main>
     );
   } catch (err) {
