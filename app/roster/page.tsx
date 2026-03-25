@@ -5,9 +5,29 @@ type Player = {
   phone_number?: string | null;
 };
 
+function getPhoneDigits(phone: string) {
+  return phone.replace(/\D/g, "");
+}
+
 function getPhoneHref(phone: string) {
-  const digits = phone.replace(/\D/g, "");
+  const digits = getPhoneDigits(phone);
   return digits ? `sms:${digits}` : "#";
+}
+
+function formatPhoneNumber(phone?: string | null) {
+  if (!phone) return "-";
+
+  const digits = getPhoneDigits(phone);
+
+  if (digits.length === 10) {
+    return `(${digits.slice(0, 3)}) ${digits.slice(3, 6)}-${digits.slice(6)}`;
+  }
+
+  if (digits.length === 11 && digits.startsWith("1")) {
+    return `(${digits.slice(1, 4)}) ${digits.slice(4, 7)}-${digits.slice(7)}`;
+  }
+
+  return phone;
 }
 
 function formatHandicapIndex(value?: number | null) {
@@ -68,13 +88,7 @@ export default async function RosterPage() {
           color: "#111",
         }}
       >
-        <h1
-          style={{
-            fontSize: 32,
-            fontWeight: 800,
-            marginBottom: 20,
-          }}
-        >
+        <h1 style={{ fontSize: 32, fontWeight: 800, marginBottom: 20 }}>
           Roster
         </h1>
 
@@ -86,6 +100,7 @@ export default async function RosterPage() {
             backgroundColor: "#ffffff",
           }}
         >
+          {/* HEADER */}
           <div className="roster-header">
             <div>Player</div>
             <div className="hi-header">
@@ -95,6 +110,7 @@ export default async function RosterPage() {
             <div className="phone-header">Phone</div>
           </div>
 
+          {/* A PLAYERS */}
           <div className="section-label">A Players</div>
 
           {aPlayers.map((player, index) => (
@@ -123,7 +139,7 @@ export default async function RosterPage() {
                     href={getPhoneHref(player.phone_number)}
                     className="phone-link"
                   >
-                    {player.phone_number}
+                    {formatPhoneNumber(player.phone_number)}
                   </a>
                 ) : (
                   "-"
@@ -132,6 +148,7 @@ export default async function RosterPage() {
             </div>
           ))}
 
+          {/* B PLAYERS */}
           <div className="section-label">B Players</div>
 
           {bPlayers.map((player, index) => (
@@ -161,7 +178,7 @@ export default async function RosterPage() {
                     href={getPhoneHref(player.phone_number)}
                     className="phone-link"
                   >
-                    {player.phone_number}
+                    {formatPhoneNumber(player.phone_number)}
                   </a>
                 ) : (
                   "-"
@@ -178,45 +195,44 @@ export default async function RosterPage() {
         <style>{`
           .roster-header {
             display: grid;
-            grid-template-columns: 380px 110px 140px;
+            grid-template-columns: minmax(0, 260px) 80px 140px;
             padding: 12px 16px;
             font-weight: 700;
             background-color: #eaeaea;
             font-size: 14px;
-            align-items: center;
-            justify-content: center;
-            column-gap: 0;
           }
 
           .roster-row {
             display: grid;
-            grid-template-columns: 380px 110px 140px;
+            grid-template-columns: minmax(0, 260px) 80px 140px;
             padding: 12px 16px;
             font-size: 16px;
             align-items: center;
-            justify-content: center;
-            column-gap: 0;
           }
 
-          .player-cell {
-            min-width: 0;
-            padding-right: 10px;
+          .section-label {
+            padding: 10px 16px;
+            background-color: #d4d4d4;
+            font-weight: 700;
+            font-size: 13px;
+            text-transform: uppercase;
+            text-align: center; /* 🔥 THIS CENTERS IT */
           }
 
           .player-name {
-            font-weight: 500;
-            line-height: 1.2;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
           }
 
           .champ-note {
-            margin-top: 3px;
             font-size: 12px;
             color: red;
-            line-height: 1.2;
+            margin-top: 3px;
           }
 
-          .hi-header,
-          .hi-cell {
+          .hi-cell,
+          .hi-header {
             text-align: center;
           }
 
@@ -231,78 +247,22 @@ export default async function RosterPage() {
           .phone-link {
             color: #0070f3;
             text-decoration: none;
-            font-weight: 500;
           }
 
-          .section-label {
-            padding: 10px 16px;
-            background-color: #d4d4d4;
-            font-weight: 700;
-            font-size: 13px;
-            text-transform: uppercase;
-          }
-
-          .hi-mobile {
-            display: none;
-          }
-
-          .hi-desktop {
-            display: inline;
-          }
+          .hi-mobile { display: none; }
+          .hi-desktop { display: inline; }
 
           @media (max-width: 700px) {
             .roster-header {
-              grid-template-columns: minmax(0, 0.8fr) 48px 150px;
-              column-gap: 4px;
-              font-size: 13px;
-              padding: 10px 12px;
+              grid-template-columns: minmax(0, 180px) 50px 140px;
             }
 
             .roster-row {
-              grid-template-columns: minmax(0, 0.8fr) 48px 150px;
-              column-gap: 4px;
-              padding: 10px 12px;
-              font-size: 14px;
+              grid-template-columns: minmax(0, 180px) 50px 140px;
             }
 
-            .player-cell {
-              padding-right: 8px;
-            }
-
-            .section-label {
-              padding: 9px 12px;
-              font-size: 12px;
-            }
-
-            .hi-mobile {
-              display: inline;
-            }
-
-            .hi-desktop {
-              display: none;
-            }
-
-            .champ-note {
-              font-size: 11px;
-            }
-
-            .phone-header {
-              text-align: center;
-            }
-
-            .phone-cell {
-              text-align: right;
-            }
-          }
-
-          @media (max-width: 520px) {
-            .roster-header {
-              grid-template-columns: minmax(0, 1fr) 48px 96px;
-            }
-
-            .roster-row {
-              grid-template-columns: minmax(0, 1fr) 48px 96px;
-            }
+            .hi-mobile { display: inline; }
+            .hi-desktop { display: none; }
           }
         `}</style>
       </main>
