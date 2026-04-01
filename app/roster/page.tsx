@@ -97,6 +97,7 @@ export default async function RosterPage() {
         >
           Roster
         </h1>
+        
 <a href="/" className="top-back-button">
   ← Back to Home
 </a>
@@ -247,13 +248,12 @@ export default async function RosterPage() {
     <div className="pairings-player">{a}</div>
     <div className="pairings-player pairings-b">{b}</div>
   </div>
-))}
+      ))}
+        </div>
 
-        
-        <a href="/" style={{ marginTop: 16, display: "inline-block" }}>
-          ← Back
-        </a>
-
+<a href="/" style={{ marginTop: 16, display: "inline-block" }}>
+  ← Back
+</a>
         <style>{`
           .roster-header {
             display: grid;
@@ -398,7 +398,78 @@ export default async function RosterPage() {
     margin-bottom: 14px;
   }
 }
-          
+          .pairings-break {
+  height: 14px;
+  background: #efefef;
+  border-top: 1px solid #dcdcdc;
+  border-bottom: 1px solid #dcdcdc;
+}
+
+.pairings-header {
+  display: grid;
+  grid-template-columns: 80px minmax(0, 1fr) minmax(0, 1fr);
+  padding: 12px 16px;
+  font-weight: 700;
+  background-color: #eaeaea;
+  font-size: 14px;
+  align-items: center;
+  column-gap: 24px;
+}
+
+.pairings-row {
+  display: grid;
+  grid-template-columns: 80px minmax(0, 1fr) minmax(0, 1fr);
+  padding: 12px 16px;
+  font-size: 16px;
+  align-items: center;
+  column-gap: 24px;
+}
+
+.pairings-seed {
+  text-align: center;
+  font-weight: 700;
+}
+
+.pairings-player {
+  min-width: 0;
+  text-align: left;
+}
+
+.pairings-b {
+  text-align: left;
+}
+
+@media (max-width: 700px) {
+  .pairings-break {
+    height: 10px;
+  }
+
+  .pairings-header {
+    grid-template-columns: 46px minmax(0, 1fr) minmax(0, 1fr);
+    padding: 10px 12px;
+    font-size: 13px;
+    column-gap: 10px;
+  }
+
+  .pairings-row {
+    grid-template-columns: 46px minmax(0, 1fr) minmax(0, 1fr);
+    padding: 10px 12px;
+    font-size: 14px;
+    column-gap: 10px;
+  }
+
+  .pairings-seed {
+    text-align: center;
+    font-weight: 700;
+  }
+
+  .pairings-player,
+  .pairings-b {
+    overflow-wrap: anywhere;
+    word-break: break-word;
+    line-height: 1.2;
+  }
+}
         `}</style>
       </main>
     );
@@ -409,7 +480,16 @@ export default async function RosterPage() {
         <p style={{ color: "red" }}>
           Error: {err instanceof Error ? err.message : "Unknown error"}
         </p>
-        <a href="/">← Back</a>
+        <a
+  href="/"
+  style={{
+    marginTop: 16,
+    display: "inline-block",
+    paddingBottom: 12,
+  }}
+>
+  ← Back
+</a>
       </main>
     );
   }
