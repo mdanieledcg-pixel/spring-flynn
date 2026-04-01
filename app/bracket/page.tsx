@@ -136,6 +136,7 @@ function MatchCard({
   compact?: boolean;
 }) {
   const isPlaceholder = match.a.seed === 0 || match.b.seed === 0;
+
   const showScores =
     typeof match.aScore === "number" &&
     typeof match.bScore === "number" &&
@@ -143,12 +144,13 @@ function MatchCard({
 
   return (
     <div className={`matchCard ${compact ? "compact" : ""}`}>
-      <div className="matchHeader">
-        <span>Final</span>
-        <span className="matchHeaderRight">CBS</span>
-      </div>
+      {showScores && (
+        <div className="matchHeader">
+          <span>Final</span>
+        </div>
+      )}
 
-      <div className="matchBody">
+      <div className={`matchBody ${showScores ? "" : "noHeader"}`}>
         {isPlaceholder ? (
           <>
             <TeamRow team={match.a} bold score={showScores ? match.aScore : null} />
@@ -158,12 +160,20 @@ function MatchCard({
           <>
             <TeamRow
               team={match.a}
-              bold={typeof match.winnerSeed === "number" ? match.winnerSeed === match.a.seed : match.a.seed < match.b.seed}
+              bold={
+                typeof match.winnerSeed === "number"
+                  ? match.winnerSeed === match.a.seed
+                  : false
+              }
               score={showScores ? match.aScore : null}
             />
             <TeamRow
               team={match.b}
-              bold={typeof match.winnerSeed === "number" ? match.winnerSeed === match.b.seed : match.b.seed < match.a.seed}
+              bold={
+                typeof match.winnerSeed === "number"
+                  ? match.winnerSeed === match.b.seed
+                  : false
+              }
               score={showScores ? match.bScore : null}
             />
           </>
@@ -489,29 +499,30 @@ export default async function BracketPage() {
 
         .matchHeader {
           display: flex;
-          justify-content: space-between;
+          justify-content: flex-start;
           align-items: center;
-          padding: 8px 12px;
-          font-size: 12px;
+          padding: 7px 10px;
+          font-size: 11px;
           font-weight: 800;
           color: #3a3a3a;
           background: #fafafa;
-        }
-
-        .matchHeaderRight {
-          color: #666;
+          min-height: 30px;
         }
 
         .matchBody {
           border-top: 1px solid #ececec;
         }
 
+        .matchBody.noHeader {
+          border-top: none;
+        }
+
         .teamRow {
           display: grid;
-          grid-template-columns: 24px minmax(0, 1fr) 32px;
-          gap: 8px;
+          grid-template-columns: 20px minmax(0, 1fr) 22px;
+          gap: 6px;
           align-items: center;
-          padding: 7px 12px;
+          padding: 7px 10px;
           background: #f3f3f3;
         }
 
@@ -526,17 +537,17 @@ export default async function BracketPage() {
         }
 
         .teamSeed {
-          font-size: 12px;
+          font-size: 11px;
           color: #666;
           font-weight: 700;
           text-align: right;
         }
 
         .teamName {
-          font-size: 15px;
+          font-size: 13px;
           font-weight: 800;
           color: #222;
-          line-height: 1.15;
+          line-height: 1.12;
           white-space: nowrap;
           overflow: hidden;
           text-overflow: ellipsis;
@@ -548,7 +559,7 @@ export default async function BracketPage() {
         }
 
         .teamScore {
-          font-size: 13px;
+          font-size: 12px;
           font-weight: 900;
           color: #222;
           text-align: right;
@@ -644,8 +655,19 @@ export default async function BracketPage() {
             max-width: none;
           }
 
+          .teamRow {
+            grid-template-columns: 18px minmax(0, 1fr) 18px;
+            gap: 5px;
+            padding: 7px 9px;
+          }
+
           .teamName {
-            font-size: 14px;
+            font-size: 12px;
+          }
+
+          .teamSeed,
+          .teamScore {
+            font-size: 10px;
           }
         }
       `}</style>
