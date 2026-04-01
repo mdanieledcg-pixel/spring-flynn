@@ -1,3 +1,5 @@
+import { PAIRINGS } from "@/app/lib/pairings";
+
 type Player = {
   id: string;
   name: string;
@@ -202,40 +204,7 @@ export default async function RosterPage() {
   <div>B Player</div>
 </div>
 
-{[
-  [1, "Bobby Taylor", "Dan Bevis"],
-  [2, "Gerard Rosato", "Mark Sessa"],
-  [3, "Brian Hungarter", "Scott Minor"],
-  [4, "Michael Dafnis", "Charles Franzone"],
-  [5, "Pete Gaumer", "Brian Ambron"],
-  [6, "Grant Morse", "Rob Sheahan"],
-  [7, "Jim Kingkiner", "Mike McHale"],
-  [8, "Alex Bradbury", "John DiJiosia"],
-  [9, "Shane Stolzer", "John Boyce"],
-  [10, "Brian Sutcliffe", "Steve Purdy"],
-  [11, "Chip Studer", "Chris Martin"],
-  [12, "B.J. Murray", "Matt Daniele"],
-  [13, "Eric Pasternack", "Bill Weychert"],
-  [14, "Coleman Hauber", "Brian Callahan"],
-  [15, "Ted Swain", "Sam Donahue"],
-  [16, "Rodney Anders", "Steve Morton"],
-  [17, "Chandler Thompson", "Mike Siniscalchi"],
-  [18, "Luke Hohenstein", "Brian Spigelmyer"],
-  [19, "Brian Lyden", "Jason Law"],
-  [20, "Stu Levick", "Pete Oh"],
-  [21, "Colin Goshert", "Bob Eschenbach"],
-  [22, "Jeff Zamorski", "John Prendergast"],
-  [23, "Justin Morasco", "Heath Wawrzynek"],
-  [24, "Chris Albright", "John Carroll"],
-  [25, "Tim Edwards", "Brian Roach"],
-  [26, "Mike Caputo", "Brian Eckelmeyer"],
-  [27, "Vince Davenport", "Tim Brennan"],
-  [28, "Shane Dolan", "Brent Davis"],
-  [29, "Ryan Smith", "Tripp Hilles"],
-  [30, "Steve Latos", "Nick Cangelosi"],
-  [31, "Greg Coletto", "Joe Nguyen"],
-  [32, "Matt Mingione", "Paul Morrow"],
-].map(([seed, a, b], index) => (
+{PAIRINGS.map(({ seed, playerA, playerB }, index) => (
   <div
     key={seed}
     className="pairings-row"
@@ -245,10 +214,10 @@ export default async function RosterPage() {
     }}
   >
     <div className="pairings-seed">{seed}</div>
-    <div className="pairings-player">{a}</div>
-    <div className="pairings-player pairings-b">{b}</div>
+    <div className="pairings-player">{playerA}</div>
+    <div className="pairings-player pairings-b">{playerB}</div>
   </div>
-      ))}
+))}
         </div>
 
 <a href="/" style={{ marginTop: 16, display: "inline-block" }}>
