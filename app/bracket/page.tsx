@@ -638,57 +638,83 @@ export default async function BracketPage() {
           letter-spacing: 0.04em;
         }
 
-        @media (max-width: 1100px) {
-          .board {
-            min-width: 100%;
-            grid-template-columns: 1fr;
-          }
+      @media (max-width: 1100px) {
+  .boardWrap {
+    overflow-x: visible;
+  }
 
-          .regionTitle,
-          .centerColumn,
-          .rightSide {
-            position: static;
-          }
+  .board {
+    min-width: 100%;
+    padding: 20px 16px 28px;
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
 
-        .leftSide,
-          .rightSide {
-            display: block;
-            margin-top: 20px;
-          }
-            margin-top: 20px;
-          }
+  .regionTitle {
+    position: static;
+    margin: 0 0 8px;
+    font-size: 18px;
+  }
 
-          .round16,
-          .round8,
-          .round4 {
-            padding-top: 0;
-          }
+  .leftTitle,
+  .rightTitle {
+    left: auto;
+    right: auto;
+  }
 
-          .cardSlot,
-          .offset16,
-          .offset8 {
-            margin-bottom: 16px;
-          }
+  .leftSide,
+  .rightSide {
+    display: block;
+    margin-top: 0;
+  }
 
-       .rightSide {
-          display: block;
-          margin-top: 16px;
-        }
+  .centerColumn {
+    margin-top: 0;
+    justify-content: flex-start;
+  }
 
-          .teamRow {
-            grid-template-columns: 20px minmax(0, 1fr);
-            gap: 6px;
-            padding: 8px 9px;
-          }
+  .round16,
+  .round8,
+  .round4 {
+    padding-top: 0;
+  }
 
-          .playerLine {
-            font-size: 11px;
-          }
+  .cardSlot,
+  .offset16,
+  .offset8,
+  .offset4 {
+    margin-bottom: 16px;
+  }
 
-          .teamSeed {
-            font-size: 10px;
-          }
-        }
+  .rightCard {
+    display: block;
+  }
+
+  .connector {
+    display: none;
+  }
+
+  .matchCard,
+  .matchCard.compact {
+    width: 100%;
+    min-width: 0;
+    max-width: 100%;
+  }
+
+  .teamRow {
+    grid-template-columns: 24px minmax(0, 1fr);
+    gap: 8px;
+    padding: 9px 10px;
+  }
+
+  .playerLine {
+    font-size: 12px;
+  }
+
+  .teamSeed {
+    font-size: 11px;
+  }
+}
       `}</style>
     </main>
   );
