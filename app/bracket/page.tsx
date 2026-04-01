@@ -638,81 +638,99 @@ export default async function BracketPage() {
           letter-spacing: 0.04em;
         }
 
-      @media (max-width: 1100px) {
+    @media (max-width: 1100px) {
+  .page {
+    padding: 14px;
+  }
+
+  .topBar h1 {
+    font-size: 26px;
+  }
+
+  .subText {
+    margin: 8px 0 14px;
+    font-size: 14px;
+  }
+
   .boardWrap {
-    overflow-x: visible;
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+    border-radius: 14px;
   }
 
   .board {
-    min-width: 100%;
-    padding: 20px 16px 28px;
-    grid-template-columns: 1fr;
-    gap: 20px;
-  }
-
-  .regionTitle {
-    position: static;
-    margin: 0 0 8px;
-    font-size: 18px;
-  }
-
-  .leftTitle,
-  .rightTitle {
-    left: auto;
-    right: auto;
+    min-width: 1580px;
+    padding: 22px 20px 28px;
+    display: grid;
+    grid-template-columns: 1fr 280px 1fr;
+    gap: 14px;
   }
 
   .leftSide,
   .rightSide {
-    display: block;
-    margin-top: 0;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    gap: 18px;
+    align-items: start;
+    margin-top: 44px;
   }
 
   .centerColumn {
-    margin-top: 0;
-    justify-content: flex-start;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 44px;
   }
 
-  .round16,
-  .round8,
-  .round4 {
-    padding-top: 0;
+  .regionTitle {
+    position: absolute;
+    top: 10px;
+    font-size: 18px;
   }
 
-  .cardSlot,
-  .offset16,
-  .offset8,
-  .offset4 {
-    margin-bottom: 16px;
+  .leftTitle {
+    left: 20px;
+  }
+
+  .rightTitle {
+    right: 20px;
   }
 
   .rightCard {
-    display: block;
-  }
-
-  .connector {
-    display: none;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 12px;
+    flex-shrink: 0;
   }
 
   .matchCard,
   .matchCard.compact {
-    width: 100%;
-    min-width: 0;
-    max-width: 100%;
+    width: 260px;
+    min-width: 260px;
+    max-width: 260px;
   }
 
   .teamRow {
     grid-template-columns: 24px minmax(0, 1fr);
     gap: 8px;
-    padding: 9px 10px;
-  }
-
-  .playerLine {
-    font-size: 12px;
+    align-items: center;
+    padding: 9px 10px 9px 10px;
   }
 
   .teamSeed {
     font-size: 11px;
+    text-align: left;
+    justify-self: start;
+  }
+
+  .playerLine {
+    font-size: 12px;
+    line-height: 1.1;
+    white-space: normal;
+    overflow: hidden;
+    text-overflow: clip;
   }
 }
       `}</style>
