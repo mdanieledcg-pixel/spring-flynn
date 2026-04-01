@@ -8,7 +8,8 @@ type PlayerRow = {
 
 type Team = {
   seed: number;
-  name: string;
+  playerA: string;
+  playerB: string;
 };
 
 type Match = {
@@ -30,7 +31,8 @@ function make32SeedBracket(teams: Team[]) {
 
     return {
       seed,
-      name: "TBD",
+      playerA: "TBD",
+      playerB: "",
     };
   };
 
@@ -64,7 +66,8 @@ function make32SeedBracket(teams: Team[]) {
 
   const winner = (matchId: string): Team => ({
     seed: 0,
-    name: `Winner of ${matchId}`,
+    playerA: `Winner of ${matchId}`,
+    playerB: "",
   });
 
   const r16: Match[] = Array.from({ length: 8 }).map((_, i) => ({
@@ -117,13 +120,18 @@ function TeamRow({
   bold?: boolean;
   score?: number | null;
 }) {
-  const isPlaceholder = team.seed === 0 || team.name === "TBD";
+  const isPlaceholder = team.seed === 0 || team.playerA === "TBD";
 
   return (
     <div className={`teamRow ${bold ? "winnerLike" : ""}`}>
       <div className="teamSeed">{team.seed ? team.seed : ""}</div>
-      <div className={`teamName ${isPlaceholder ? "placeholder" : ""}`}>{team.name}</div>
-      <div className="teamScore">{typeof score === "number" ? score : ""}</div>
+
+      <div className={`teamNames ${isPlaceholder ? "placeholder" : ""}`}>
+        <div className="playerLine">{team.playerA || "\u00A0"}</div>
+        {team.playerB ? <div className="playerLine">{team.playerB}</div> : <div className="playerLine emptyLine">\u00A0</div>}
+      </div>
+
+      {typeof score === "number" ? <div className="teamScore">{score}</div> : null}
     </div>
   );
 }
@@ -225,10 +233,8 @@ export default async function BracketPage() {
 
     return {
       seed: pairing.seed,
-      name:
-        aExists || bExists
-          ? `${pairing.playerA} / ${pairing.playerB}`
-          : `${pairing.playerA} / ${pairing.playerB}`,
+      playerA: aExists ? pairing.playerA : pairing.playerA,
+      playerB: bExists ? pairing.playerB : pairing.playerB,
     };
   });
 
@@ -353,7 +359,7 @@ export default async function BracketPage() {
         .page {
           padding: 24px;
           font-family: system-ui;
-          max-width: 1720px;
+          max-width: 1760px;
           margin: 0 auto;
           color: #111;
           background: #efefef;
@@ -404,10 +410,10 @@ export default async function BracketPage() {
         }
 
         .board {
-          min-width: 1580px;
+          min-width: 1640px;
           padding: 28px 28px 36px;
           display: grid;
-          grid-template-columns: 1fr 260px 1fr;
+          grid-template-columns: 1fr 280px 1fr;
           gap: 14px;
           position: relative;
           background: #ececec;
@@ -433,7 +439,7 @@ export default async function BracketPage() {
         .leftSide,
         .rightSide {
           display: grid;
-          grid-template-columns: 1.22fr 1.12fr 1.02fr 0.96fr;
+          grid-template-columns: 1fr 1fr 1fr 1fr;
           gap: 20px;
           align-items: start;
           margin-top: 44px;
@@ -449,15 +455,15 @@ export default async function BracketPage() {
         }
 
         .round16 {
-          padding-top: 88px;
+          padding-top: 96px;
         }
 
         .round8 {
-          padding-top: 176px;
+          padding-top: 192px;
         }
 
         .round4 {
-          padding-top: 352px;
+          padding-top: 384px;
         }
 
         .cardSlot {
@@ -466,11 +472,11 @@ export default async function BracketPage() {
         }
 
         .offset16 {
-          margin-bottom: 108px;
+          margin-bottom: 116px;
         }
 
         .offset8 {
-          margin-bottom: 234px;
+          margin-bottom: 248px;
         }
 
         .offset4 {
@@ -494,7 +500,7 @@ export default async function BracketPage() {
         }
 
         .matchCard.compact {
-          max-width: 250px;
+          max-width: 100%;
         }
 
         .matchHeader {
@@ -519,10 +525,10 @@ export default async function BracketPage() {
 
         .teamRow {
           display: grid;
-          grid-template-columns: 20px minmax(0, 1fr) 22px;
+          grid-template-columns: 22px minmax(0, 1fr);
           gap: 6px;
-          align-items: center;
-          padding: 7px 10px;
+          align-items: start;
+          padding: 8px 10px;
           background: #f3f3f3;
         }
 
@@ -541,10 +547,15 @@ export default async function BracketPage() {
           color: #666;
           font-weight: 700;
           text-align: right;
+          padding-top: 1px;
         }
 
-        .teamName {
-          font-size: 13px;
+        .teamNames {
+          min-width: 0;
+        }
+
+        .playerLine {
+          font-size: 12px;
           font-weight: 800;
           color: #222;
           line-height: 1.12;
@@ -553,16 +564,21 @@ export default async function BracketPage() {
           text-overflow: ellipsis;
         }
 
-        .teamName.placeholder {
+        .playerLine + .playerLine {
+          margin-top: 2px;
+        }
+
+        .teamNames.placeholder .playerLine {
           color: #666;
           font-weight: 700;
         }
 
+        .emptyLine {
+          visibility: hidden;
+        }
+
         .teamScore {
-          font-size: 12px;
-          font-weight: 900;
-          color: #222;
-          text-align: right;
+          display: none;
         }
 
         .connector {
@@ -606,7 +622,7 @@ export default async function BracketPage() {
 
         .finalSlot {
           width: 100%;
-          max-width: 260px;
+          max-width: 100%;
         }
 
         .finalLabel {
@@ -651,22 +667,17 @@ export default async function BracketPage() {
             display: none;
           }
 
-          .matchCard.compact {
-            max-width: none;
-          }
-
           .teamRow {
-            grid-template-columns: 18px minmax(0, 1fr) 18px;
-            gap: 5px;
-            padding: 7px 9px;
+            grid-template-columns: 20px minmax(0, 1fr);
+            gap: 6px;
+            padding: 8px 9px;
           }
 
-          .teamName {
-            font-size: 12px;
+          .playerLine {
+            font-size: 11px;
           }
 
-          .teamSeed,
-          .teamScore {
+          .teamSeed {
             font-size: 10px;
           }
         }
