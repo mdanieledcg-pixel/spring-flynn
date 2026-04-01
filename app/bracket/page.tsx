@@ -650,8 +650,11 @@ export default async function BracketPage() {
             position: static;
           }
 
-          .leftSide {
+        .leftSide,
+          .rightSide {
             display: block;
+            margin-top: 20px;
+          }
             margin-top: 20px;
           }
 
@@ -667,9 +670,10 @@ export default async function BracketPage() {
             margin-bottom: 16px;
           }
 
-          .rightSide {
-            display: none;
-          }
+       .rightSide {
+          display: block;
+          margin-top: 16px;
+        }
 
           .teamRow {
             grid-template-columns: 20px minmax(0, 1fr);
