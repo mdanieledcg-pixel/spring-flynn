@@ -1,7 +1,6 @@
 import { PAIRINGS } from "@/app/lib/pairings";
 
 type Player = {
-  id: string;
   name: string;
   handicap_index?: number | null;
 };
@@ -41,18 +40,23 @@ function formatTeamLabel(team: BracketTeam) {
 function MatchSlot({
   team,
   mobile = false,
+  rightSide = false,
 }: {
   team: BracketTeam;
   mobile?: boolean;
+  rightSide?: boolean;
 }) {
   const label = formatTeamLabel(team);
 
   return (
-    <div className={`slot ${mobile ? "mobile" : ""}`}>
-      <div className="seed">({team.seed})</div>
+    <div className={`slot ${mobile ? "mobile" : ""} ${rightSide ? "rightSide" : ""}`}>
+      {!rightSide && <div className="seed">({team.seed})</div>}
+
       <div className="slotLine">
         <span className="slotText">{label || "\u00A0"}</span>
       </div>
+
+      {rightSide && !mobile && <div className="seed">({team.seed})</div>}
     </div>
   );
 }
@@ -84,7 +88,7 @@ export default async function BracketPage() {
 
   try {
     const res = await fetch(
-      `${url}/rest/v1/players?select=id,name,handicap_index&order=handicap_index.asc.nullslast`,
+      `${url}/rest/v1/players?select=name,handicap_index&order=handicap_index.asc.nullslast`,
       {
         headers: {
           apikey: key,
@@ -177,7 +181,7 @@ export default async function BracketPage() {
               <div className="roundLabel">ROUND OF 32</div>
               <div className="roundBody">
                 {rightTeams.map((team) => (
-                  <MatchSlot key={`right-${team.seed}`} team={team} />
+                  <MatchSlot key={`right-${team.seed}`} team={team} rightSide />
                 ))}
               </div>
             </div>
@@ -310,6 +314,10 @@ export default async function BracketPage() {
             align-items: center;
             min-height: 42px;
             margin-bottom: 12px;
+          }
+
+          .slot.rightSide {
+            grid-template-columns: minmax(0, 1fr) 42px;
           }
 
           .slot.mobile {
@@ -502,6 +510,10 @@ export default async function BracketPage() {
               margin-bottom: 8px;
               grid-template-columns: 28px minmax(0, 1fr);
               gap: 4px;
+            }
+
+            .slot.rightSide {
+              grid-template-columns: minmax(0, 1fr) 28px;
             }
 
             .seed {
