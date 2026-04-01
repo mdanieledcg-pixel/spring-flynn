@@ -374,6 +374,31 @@ export default async function RosterPage() {
               text-align: right;
             }
           }
+.top-back-button {
+  display: inline-block;
+  margin-bottom: 18px;
+  padding: 8px 14px;
+  background: #ffffff;
+  border: 1px solid #d5d5d5;
+  border-radius: 8px;
+  text-decoration: none;
+  color: #111;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+.top-back-button:hover {
+  background: #f7f7f7;
+}
+
+@media (max-width: 700px) {
+  .top-back-button {
+    width: 100%;
+    text-align: center;
+    margin-bottom: 14px;
+  }
+}
+          
         `}</style>
       </main>
     );
