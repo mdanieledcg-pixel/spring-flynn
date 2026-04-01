@@ -488,10 +488,13 @@ export default async function BracketPage() {
           align-items: center;
           justify-content: flex-start;
           gap: 12px;
+          flex-shrink: 0;
         }
 
         .matchCard {
-          width: 100%;
+          width: 260px;
+          min-width: 260px;
+          max-width: 260px;
           background: #f7f7f7;
           border: 1px solid #d2d2d2;
           border-radius: 14px;
@@ -500,7 +503,9 @@ export default async function BracketPage() {
         }
 
         .matchCard.compact {
-          max-width: 100%;
+          width: 260px;
+          min-width: 260px;
+          max-width: 260px;
         }
 
         .matchHeader {
@@ -543,11 +548,11 @@ export default async function BracketPage() {
         }
 
         .teamSeed {
-          font-size: 11px;
+          font-size: 13px;
           color: #666;
-          font-weight: 700;
-          text-align: right;
-          padding-top: 1px;
+          font-weight: 800;
+          text-align: left;
+          justify-self: start;
         }
 
         .teamNames {
@@ -555,13 +560,12 @@ export default async function BracketPage() {
         }
 
         .playerLine {
-          font-size: 12px;
-          font-weight: 800;
+          font-size: 14px;
+          font-weight: 900;
           color: #222;
-          line-height: 1.12;
-          white-space: nowrap;
-          overflow: hidden;
-          text-overflow: ellipsis;
+          line-height: 1.15;
+          text-align: left;
+          white-space: normal;
         }
 
         .playerLine + .playerLine {
