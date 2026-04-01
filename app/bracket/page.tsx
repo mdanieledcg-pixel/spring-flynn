@@ -37,46 +37,123 @@ function formatTeamLabel(team: BracketTeam) {
   return `${team.playerA} / ${team.playerB} (${team.combinedHandicap.toFixed(1)})`;
 }
 
-function MatchSlot({
+function TeamLine({
   team,
-  mobile = false,
   rightSide = false,
 }: {
   team: BracketTeam;
-  mobile?: boolean;
   rightSide?: boolean;
 }) {
   const label = formatTeamLabel(team);
 
-  return (
-    <div className={`slot ${mobile ? "mobile" : ""} ${rightSide ? "rightSide" : ""}`}>
-      {!rightSide && <div className="seed">({team.seed})</div>}
-
-      <div className="slotLine">
-        <span className="slotText">{label || "\u00A0"}</span>
+  if (rightSide) {
+    return (
+      <div className="teamLineWrap rightSide">
+        <div className="teamLine">
+          <span className="teamText">{label || "\u00A0"}</span>
+        </div>
+        <div className="seed">({team.seed})</div>
       </div>
+    );
+  }
 
-      {rightSide && !mobile && <div className="seed">({team.seed})</div>}
+  return (
+    <div className="teamLineWrap">
+      <div className="seed">({team.seed})</div>
+      <div className="teamLine">
+        <span className="teamText">{label || "\u00A0"}</span>
+      </div>
     </div>
   );
 }
 
-function EmptyRound({
+function LeftBracketRound({
+  teams,
+  label,
+  roundClass,
+}: {
+  teams: BracketTeam[];
+  label: string;
+  roundClass: string;
+}) {
+  return (
+    <div className={`roundCol ${roundClass}`}>
+      <div className="roundLabel">{label}</div>
+      <div className="roundStack">
+        {teams.map((team, index) => {
+          const isTop = index % 2 === 0;
+          return (
+            <div key={`${roundClass}-${team.seed}`} className="matchSlot">
+              <TeamLine team={team} />
+              <div className={`connector left ${isTop ? "top" : "bottom"}`} />
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
+function RightBracketRound({
+  teams,
+  label,
+  roundClass,
+}: {
+  teams: BracketTeam[];
+  label: string;
+  roundClass: string;
+}) {
+  return (
+    <div className={`roundCol ${roundClass}`}>
+      <div className="roundLabel">{label}</div>
+      <div className="roundStack">
+        {teams.map((team, index) => {
+          const isTop = index % 2 === 0;
+          return (
+            <div key={`${roundClass}-${team.seed}`} className="matchSlot">
+              <div className={`connector right ${isTop ? "top" : "bottom"}`} />
+              <TeamLine team={team} rightSide />
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
+function EmptyLinesRound({
   label,
   count,
+  side,
+  className,
 }: {
   label: string;
   count: number;
+  side: "left" | "right";
+  className: string;
 }) {
   return (
-    <div className="round">
+    <div className={`roundCol ${className}`}>
       <div className="roundLabel">{label}</div>
-      <div className="roundBody">
-        {Array.from({ length: count }).map((_, i) => (
-          <div key={i} className="emptyRoundSlot">
-            <div className="emptyBox" />
-          </div>
-        ))}
+      <div className="roundStack">
+        {Array.from({ length: count }).map((_, index) => {
+          const isTop = index % 2 === 0;
+          return (
+            <div key={`${className}-${index}`} className="matchSlot">
+              {side === "left" ? (
+                <>
+                  <div className="advanceLine" />
+                  <div className={`connector left ${isTop ? "top" : "bottom"}`} />
+                </>
+              ) : (
+                <>
+                  <div className={`connector right ${isTop ? "top" : "bottom"}`} />
+                  <div className="advanceLine" />
+                </>
+              )}
+            </div>
+          );
+        })}
       </div>
     </div>
   );
@@ -139,125 +216,93 @@ export default async function BracketPage() {
 
     return (
       <main className="bracketPage">
-        <a href="/" className="top-back-button">
+        <a href="/" className="topBackButton">
           ← Back to Home
         </a>
 
         <div className="header">
           <h1>Spring Flynn Bracket</h1>
-          <p>32 Team Championship</p>
+          <p>Round of 32 • Sweet 16 • Elite 8 • Final 4 • Championship</p>
         </div>
 
         <div className="desktopBracket">
-          <div className="side">
-            <div className="round">
-              <div className="roundLabel">ROUND OF 32</div>
-              <div className="roundBody">
-                {leftTeams.map((team) => (
-                  <MatchSlot key={`left-${team.seed}`} team={team} />
-                ))}
-              </div>
-            </div>
-
-            <EmptyRound label="SWEET 16" count={8} />
-            <EmptyRound label="ELITE 8" count={4} />
-            <EmptyRound label="FINAL 4" count={2} />
+          <div className="leftHalf">
+            <LeftBracketRound teams={leftTeams} label="R32" roundClass="r32" />
+            <EmptyLinesRound label="S16" count={8} side="left" className="s16" />
+            <EmptyLinesRound label="E8" count={4} side="left" className="e8" />
+            <EmptyLinesRound label="F4" count={2} side="left" className="f4" />
           </div>
 
           <div className="centerCol">
-            <div className="centerLabel">FINAL</div>
-            <div className="finalBox" />
-            <div className="centerLabel">CHAMPIONSHIP</div>
+            <div className="roundLabel finalLabel">FINAL</div>
+            <div className="finalMatchLine" />
+            <div className="championshipLabel">CHAMPIONSHIP</div>
             <div className="championshipBox" />
-            <div className="championLine">CHAMPION</div>
+            <div className="championText">CHAMPION</div>
+            <div className="championLine" />
           </div>
 
-          <div className="side">
-            <EmptyRound label="FINAL 4" count={2} />
-            <EmptyRound label="ELITE 8" count={4} />
-            <EmptyRound label="SWEET 16" count={8} />
-
-            <div className="round">
-              <div className="roundLabel">ROUND OF 32</div>
-              <div className="roundBody">
-                {rightTeams.map((team) => (
-                  <MatchSlot key={`right-${team.seed}`} team={team} rightSide />
-                ))}
-              </div>
-            </div>
+          <div className="rightHalf">
+            <EmptyLinesRound label="F4" count={2} side="right" className="f4" />
+            <EmptyLinesRound label="E8" count={4} side="right" className="e8" />
+            <EmptyLinesRound label="S16" count={8} side="right" className="s16" />
+            <RightBracketRound teams={rightTeams} label="R32" roundClass="r32" />
           </div>
         </div>
 
         <div className="mobileBracket">
-          <section className="mobileSection">
-            <div className="mobileRoundLabel">ROUND OF 32</div>
-            {mobileTeams.map((team) => (
-              <MatchSlot key={`mobile-${team.seed}`} team={team} mobile />
-            ))}
-          </section>
-
-          <section className="mobileSection">
-            <div className="mobileRoundLabel">SWEET 16</div>
-            {Array.from({ length: 8 }).map((_, i) => (
-              <div key={i} className="mobileEmptySlot">
-                <div className="emptyBox" />
+          <div className="mobileRoundLabel">ROUND OF 32</div>
+          {mobileTeams.map((team) => (
+            <div key={`mobile-${team.seed}`} className="mobileTeamRow">
+              <div className="seed">({team.seed})</div>
+              <div className="teamLine mobileLine">
+                <span className="teamText">{formatTeamLabel(team) || "\u00A0"}</span>
               </div>
-            ))}
-          </section>
-
-          <section className="mobileSection">
-            <div className="mobileRoundLabel">ELITE 8</div>
-            {Array.from({ length: 4 }).map((_, i) => (
-              <div key={i} className="mobileEmptySlot">
-                <div className="emptyBox" />
-              </div>
-            ))}
-          </section>
-
-          <section className="mobileSection">
-            <div className="mobileRoundLabel">FINAL 4</div>
-            {Array.from({ length: 2 }).map((_, i) => (
-              <div key={i} className="mobileEmptySlot">
-                <div className="emptyBox" />
-              </div>
-            ))}
-          </section>
-
-          <section className="mobileSection">
-            <div className="mobileRoundLabel">CHAMPIONSHIP</div>
-            <div className="mobileEmptySlot">
-              <div className="championshipBox mobileChampionship" />
             </div>
-            <div className="championLine mobileChampion">CHAMPION</div>
-          </section>
+          ))}
+
+          <div className="mobileSpacerLabel">SWEET 16</div>
+          {Array.from({ length: 8 }).map((_, i) => (
+            <div key={`m-s16-${i}`} className="mobileAdvanceLine" />
+          ))}
+
+          <div className="mobileSpacerLabel">ELITE 8</div>
+          {Array.from({ length: 4 }).map((_, i) => (
+            <div key={`m-e8-${i}`} className="mobileAdvanceLine" />
+          ))}
+
+          <div className="mobileSpacerLabel">FINAL 4</div>
+          {Array.from({ length: 2 }).map((_, i) => (
+            <div key={`m-f4-${i}`} className="mobileAdvanceLine" />
+          ))}
+
+          <div className="mobileSpacerLabel">CHAMPIONSHIP</div>
+          <div className="mobileChampionshipBox" />
+          <div className="championText mobileChampionText">CHAMPION</div>
+          <div className="championLine" />
         </div>
 
         <style>{`
           .bracketPage {
             min-height: 100vh;
-            padding: 32px 20px 56px;
+            padding: 28px 20px 56px;
             font-family: system-ui;
             max-width: 1800px;
             margin: 0 auto;
             color: #111;
-            background: #f6f1e7;
+            background: #f3eee3;
           }
 
-          .top-back-button {
+          .topBackButton {
             display: inline-block;
             margin-bottom: 18px;
             padding: 8px 14px;
-            background: #ffffff;
+            background: #fff;
             border: 1px solid #d5d5d5;
             border-radius: 8px;
             text-decoration: none;
             color: #111;
             font-weight: 600;
-            transition: all 0.2s ease;
-          }
-
-          .top-back-button:hover {
-            background: #f7f7f7;
           }
 
           .header {
@@ -267,9 +312,9 @@ export default async function BracketPage() {
 
           .header h1 {
             margin: 0;
-            font-size: 36px;
-            font-weight: 900;
+            font-size: 42px;
             line-height: 1.05;
+            font-weight: 900;
           }
 
           .header p {
@@ -280,88 +325,121 @@ export default async function BracketPage() {
 
           .desktopBracket {
             display: grid;
-            grid-template-columns: minmax(0, 1fr) 220px minmax(0, 1fr);
-            gap: 18px;
+            grid-template-columns: minmax(0, 1fr) 280px minmax(0, 1fr);
+            gap: 14px;
             align-items: start;
           }
 
-          .side {
+          .leftHalf,
+          .rightHalf {
             display: grid;
-            grid-template-columns: repeat(4, minmax(0, 1fr));
-            gap: 16px;
-            align-items: start;
+            grid-template-columns: 1.35fr 1fr 0.9fr 0.8fr;
+            gap: 20px;
+          }
+
+          .roundCol {
+            min-width: 0;
           }
 
           .roundLabel,
-          .centerLabel,
-          .mobileRoundLabel {
+          .championshipLabel {
             text-align: center;
             font-size: 13px;
             font-weight: 900;
             letter-spacing: 0.05em;
-            margin-bottom: 14px;
+            margin-bottom: 18px;
           }
 
-          .roundBody {
+          .roundStack {
             display: flex;
             flex-direction: column;
           }
 
-          .slot {
-            display: grid;
-            grid-template-columns: 42px minmax(0, 1fr);
-            gap: 8px;
+          .r32 .matchSlot { height: 68px; }
+          .s16 .matchSlot { height: 136px; }
+          .e8 .matchSlot { height: 272px; }
+          .f4 .matchSlot { height: 544px; }
+
+          .matchSlot {
+            position: relative;
+            display: flex;
             align-items: center;
-            min-height: 42px;
-            margin-bottom: 12px;
           }
 
-          .slot.rightSide {
-            grid-template-columns: minmax(0, 1fr) 42px;
+          .teamLineWrap {
+            display: grid;
+            grid-template-columns: 50px minmax(0, 1fr);
+            gap: 10px;
+            align-items: center;
+            width: 100%;
           }
 
-          .slot.mobile {
-            grid-template-columns: 42px minmax(0, 1fr);
+          .teamLineWrap.rightSide {
+            grid-template-columns: minmax(0, 1fr) 50px;
           }
 
           .seed {
             font-size: 18px;
             font-weight: 800;
-            text-align: center;
             line-height: 1;
+            text-align: center;
+            white-space: nowrap;
           }
 
-          .slotLine {
-            min-height: 30px;
-            border-bottom: 3px solid #111;
-            display: flex;
-            align-items: flex-end;
-            padding: 0 4px 2px;
-          }
-
-          .slotText {
-            display: block;
+          .teamLine,
+          .advanceLine,
+          .finalMatchLine {
+            border-bottom: 4px solid #111;
+            height: 0;
             width: 100%;
-            font-size: 18px;
+          }
+
+          .teamText {
+            display: block;
+            font-size: 17px;
             font-weight: 800;
             line-height: 1.1;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
+            padding-bottom: 4px;
           }
 
-          .emptyRoundSlot {
-            min-height: 66px;
-            display: flex;
-            align-items: center;
-            margin-bottom: 16px;
+          .connector {
+            position: absolute;
+            top: 50%;
+            width: 24px;
+            height: 50%;
           }
 
-          .emptyBox {
-            width: 100%;
-            height: 40px;
-            border: 3px solid #111;
-            background: transparent;
+          .connector.left {
+            right: -12px;
+            border-right: 4px solid #111;
+          }
+
+          .connector.left.top {
+            border-top: 4px solid #111;
+            transform: translateY(0);
+          }
+
+          .connector.left.bottom {
+            border-bottom: 4px solid #111;
+            transform: translateY(-100%);
+          }
+
+          .connector.right {
+            left: -12px;
+            border-left: 4px solid #111;
+          }
+
+          .connector.right.top {
+            border-top: 4px solid #111;
+            transform: translateY(0);
+          }
+
+          .connector.right.bottom {
+            border-bottom: 4px solid #111;
+            transform: translateY(-100%);
           }
 
           .centerCol {
@@ -371,30 +449,37 @@ export default async function BracketPage() {
             padding-top: 8px;
           }
 
-          .finalBox {
-            width: 100%;
-            height: 54px;
-            border: 3px solid #111;
-            margin-bottom: 56px;
-            background: rgba(255, 255, 255, 0.25);
+          .finalLabel {
+            margin-bottom: 26px;
+          }
+
+          .finalMatchLine {
+            margin-top: 16px;
+            margin-bottom: 98px;
+          }
+
+          .championshipLabel {
+            margin-bottom: 18px;
           }
 
           .championshipBox {
             width: 100%;
-            height: 62px;
-            border: 3px solid #111;
-            margin-bottom: 16px;
-            background: rgba(255, 255, 255, 0.25);
+            height: 86px;
+            border: 4px solid #111;
+            background: transparent;
+            margin-bottom: 24px;
+          }
+
+          .championText {
+            font-size: 34px;
+            font-weight: 900;
+            line-height: 1;
+            margin-bottom: 12px;
           }
 
           .championLine {
             width: 100%;
-            border-bottom: 3px solid #111;
-            text-align: center;
-            padding-bottom: 6px;
-            font-size: 22px;
-            font-weight: 900;
-            letter-spacing: 0.03em;
+            border-bottom: 4px solid #111;
           }
 
           .mobileBracket {
@@ -403,27 +488,39 @@ export default async function BracketPage() {
             margin: 0 auto;
           }
 
-          .mobileSection {
-            margin-bottom: 24px;
-          }
-
-          .mobileRoundLabel {
-            text-align: left;
-            margin-bottom: 12px;
+          .mobileRoundLabel,
+          .mobileSpacerLabel {
             font-size: 14px;
+            font-weight: 900;
+            letter-spacing: 0.05em;
+            margin: 18px 0 12px;
           }
 
-          .mobileEmptySlot {
-            margin-bottom: 12px;
+          .mobileTeamRow {
+            display: grid;
+            grid-template-columns: 50px minmax(0, 1fr);
+            gap: 10px;
+            align-items: center;
+            margin-bottom: 14px;
           }
 
-          .mobileChampionship {
-            height: 56px;
+          .mobileLine {
+            border-bottom-width: 3px;
           }
 
-          .mobileChampion {
-            margin-top: 6px;
-            font-size: 18px;
+          .mobileAdvanceLine {
+            border-bottom: 3px solid #111;
+            margin-bottom: 20px;
+          }
+
+          .mobileChampionshipBox {
+            height: 62px;
+            border: 3px solid #111;
+            margin-bottom: 16px;
+          }
+
+          .mobileChampionText {
+            font-size: 24px;
           }
 
           @media (max-width: 1100px) {
@@ -435,7 +532,7 @@ export default async function BracketPage() {
               display: block;
             }
 
-            .top-back-button {
+            .topBackButton {
               width: 100%;
               text-align: center;
             }
@@ -445,17 +542,15 @@ export default async function BracketPage() {
             }
 
             .header h1 {
-              font-size: 28px;
+              font-size: 30px;
             }
 
             .header p {
               font-size: 13px;
-              line-height: 1.35;
             }
 
-            .slotText {
+            .teamText {
               font-size: 15px;
-              white-space: nowrap;
             }
 
             .seed {
@@ -474,11 +569,11 @@ export default async function BracketPage() {
 
             .bracketPage {
               background: white;
-              padding: 14px 14px 24px;
+              padding: 12px 12px 20px;
             }
 
             .header {
-              margin-bottom: 12px;
+              margin-bottom: 14px;
             }
 
             .header h1 {
@@ -487,32 +582,35 @@ export default async function BracketPage() {
 
             .header p {
               font-size: 11px;
-              margin-top: 4px;
             }
 
             .desktopBracket {
-              grid-template-columns: minmax(0, 1fr) 180px minmax(0, 1fr);
+              grid-template-columns: minmax(0, 1fr) 210px minmax(0, 1fr);
               gap: 10px;
             }
 
-            .side {
-              gap: 8px;
+            .leftHalf,
+            .rightHalf {
+              gap: 10px;
             }
 
             .roundLabel,
-            .centerLabel {
+            .championshipLabel {
               font-size: 10px;
-              margin-bottom: 8px;
+              margin-bottom: 10px;
             }
 
-            .slot {
-              min-height: 28px;
-              margin-bottom: 8px;
+            .r32 .matchSlot { height: 42px; }
+            .s16 .matchSlot { height: 84px; }
+            .e8 .matchSlot { height: 168px; }
+            .f4 .matchSlot { height: 336px; }
+
+            .teamLineWrap {
               grid-template-columns: 28px minmax(0, 1fr);
-              gap: 4px;
+              gap: 5px;
             }
 
-            .slot.rightSide {
+            .teamLineWrap.rightSide {
               grid-template-columns: minmax(0, 1fr) 28px;
             }
 
@@ -520,45 +618,56 @@ export default async function BracketPage() {
               font-size: 11px;
             }
 
-            .slotLine {
-              min-height: 20px;
-              border-bottom-width: 2px;
-              padding: 0 2px 1px;
-            }
-
-            .slotText {
+            .teamText {
               font-size: 11px;
+              padding-bottom: 2px;
             }
 
-            .emptyRoundSlot {
-              min-height: 44px;
-              margin-bottom: 10px;
-            }
-
-            .emptyBox,
-            .finalBox,
-            .championshipBox,
+            .teamLine,
+            .advanceLine,
+            .finalMatchLine,
             .championLine {
-              border-width: 2px;
+              border-bottom-width: 2px;
             }
 
-            .emptyBox {
-              height: 24px;
+            .connector.left,
+            .connector.right {
+              width: 12px;
             }
 
-            .finalBox {
-              height: 34px;
-              margin-bottom: 32px;
+            .connector.left {
+              right: -6px;
+              border-right-width: 2px;
+            }
+
+            .connector.right {
+              left: -6px;
+              border-left-width: 2px;
+            }
+
+            .connector.left.top,
+            .connector.right.top {
+              border-top-width: 2px;
+            }
+
+            .connector.left.bottom,
+            .connector.right.bottom {
+              border-bottom-width: 2px;
             }
 
             .championshipBox {
-              height: 40px;
-              margin-bottom: 10px;
+              border-width: 2px;
+              height: 48px;
+              margin-bottom: 12px;
             }
 
-            .championLine {
-              font-size: 14px;
-              padding-bottom: 4px;
+            .championText {
+              font-size: 18px;
+              margin-bottom: 8px;
+            }
+
+            .finalMatchLine {
+              margin-bottom: 54px;
             }
 
             @page {
