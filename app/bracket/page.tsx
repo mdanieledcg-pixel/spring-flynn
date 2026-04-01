@@ -9,7 +9,6 @@ type PlayerRow = {
 type Team = {
   seed: number;
   name: string;
-  combinedHandicap: number | null;
 };
 
 type Match = {
@@ -17,10 +16,6 @@ type Match = {
   a: Team;
   b: Team;
 };
-
-function fmtIndex(n: number | null) {
-  return typeof n === "number" ? n.toFixed(1) : "-";
-}
 
 function make32SeedBracket(teams: Team[]) {
   const bySeed = new Map<number, Team>();
@@ -33,7 +28,6 @@ function make32SeedBracket(teams: Team[]) {
     return {
       seed,
       name: "TBD",
-      combinedHandicap: null,
     };
   };
 
@@ -65,7 +59,6 @@ function make32SeedBracket(teams: Team[]) {
   const winner = (matchId: string): Team => ({
     seed: 0,
     name: `Winner of ${matchId}`,
-    combinedHandicap: null,
   });
 
   const r16: Match[] = Array.from({ length: 8 }).map((_, i) => ({
@@ -88,7 +81,7 @@ function make32SeedBracket(teams: Team[]) {
 
   const final: Match[] = [
     {
-      id: "Final",
+      id: "FINAL",
       a: winner(sf[0].id),
       b: winner(sf[1].id),
     },
@@ -97,69 +90,66 @@ function make32SeedBracket(teams: Team[]) {
   return { r32, r16, qf, sf, final };
 }
 
-function TeamLine({ team }: { team: Team }) {
+function TeamRow({
+  team,
+  bold = false,
+}: {
+  team: Team;
+  bold?: boolean;
+}) {
   const isPlaceholder = team.seed === 0 || team.name === "TBD";
 
   return (
-    <div style={{ display: "grid", gap: 6 }}>
-      <div style={{ fontWeight: 900, color: "#fff", fontSize: 13 }}>
-        {team.seed ? `#${team.seed}` : ""}
-      </div>
-
-      <div style={{ color: "#f4f4f4", lineHeight: 1.35 }}>
-        {isPlaceholder ? (
-          <div style={{ fontWeight: 800 }}>{team.name}</div>
-        ) : (
-          <div style={{ fontWeight: 800 }}>
-            {team.name} <span style={{ opacity: 0.9 }}>({fmtIndex(team.combinedHandicap)})</span>
-          </div>
-        )}
-      </div>
+    <div className={`teamRow ${bold ? "winnerLike" : ""}`}>
+      <div className="teamSeed">{team.seed ? team.seed : ""}</div>
+      <div className={`teamName ${isPlaceholder ? "placeholder" : ""}`}>{team.name}</div>
     </div>
   );
 }
 
-function MatchCard({ title, a, b }: { title: string; a: Team; b: Team }) {
-  const isPlaceholder = a.seed === 0 || b.seed === 0;
+function MatchCard({
+  match,
+  compact = false,
+}: {
+  match: Match;
+  compact?: boolean;
+}) {
+  const isPlaceholder = match.a.seed === 0 || match.b.seed === 0;
 
   return (
-    <div
-      style={{
-        border: "1px solid rgba(255,255,255,0.12)",
-        borderRadius: 12,
-        padding: 12,
-        background: "rgba(255,255,255,0.04)",
-        boxShadow: "inset 0 1px 0 rgba(255,255,255,0.04)",
-      }}
-    >
-      <div
-        style={{
-          fontSize: 11,
-          letterSpacing: 0.7,
-          opacity: 0.82,
-          marginBottom: 10,
-          color: "#fff",
-          fontWeight: 800,
-        }}
-      >
-        {title}
+    <div className={`matchCard ${compact ? "compact" : ""}`}>
+      <div className="matchHeader">
+        <span>Final</span>
+        <span className="matchHeaderRight">CBS</span>
       </div>
 
-      {isPlaceholder ? (
-        <div style={{ color: "#f0f0f0", lineHeight: 1.6 }}>
-          <div style={{ fontWeight: 800 }}>{a.name}</div>
-          <div style={{ opacity: 0.7, margin: "6px 0", fontWeight: 700 }}>vs</div>
-          <div style={{ fontWeight: 800 }}>{b.name}</div>
-        </div>
-      ) : (
-        <div style={{ display: "grid", gap: 10 }}>
-          <TeamLine team={a} />
-          <div style={{ opacity: 0.68, color: "#fff", fontWeight: 800 }}>vs</div>
-          <TeamLine team={b} />
-        </div>
-      )}
+      <div className="matchBody">
+        {isPlaceholder ? (
+          <>
+            <TeamRow team={match.a} bold />
+            <TeamRow team={match.b} />
+          </>
+        ) : (
+          <>
+            <TeamRow team={match.a} bold={match.a.seed < match.b.seed} />
+            <TeamRow team={match.b} bold={match.b.seed < match.a.seed} />
+          </>
+        )}
+      </div>
+
+      <div className="matchFooter">GAME RECAP</div>
     </div>
   );
+}
+
+function Connector({
+  side,
+  variant = "short",
+}: {
+  side: "left" | "right";
+  variant?: "short" | "medium" | "long";
+}) {
+  return <div className={`connector ${side} ${variant}`} />;
 }
 
 export default async function BracketPage() {
@@ -186,137 +176,447 @@ export default async function BracketPage() {
   }
 
   const rows = (data ?? []) as PlayerRow[];
-  const idxByName = new Map(rows.map((r) => [r.name, r.handicap_index]));
+  const byName = new Map(rows.map((r) => [r.name, r]));
 
   const teams: Team[] = PAIRINGS.map((pairing) => {
-    const aIndex = idxByName.get(pairing.playerA) ?? null;
-    const bIndex = idxByName.get(pairing.playerB) ?? null;
+    const aExists = byName.get(pairing.playerA);
+    const bExists = byName.get(pairing.playerB);
 
     return {
       seed: pairing.seed,
-      name: `${pairing.playerA} / ${pairing.playerB}`,
-      combinedHandicap:
-        typeof aIndex === "number" && typeof bIndex === "number"
-          ? aIndex + bIndex
-          : null,
+      name:
+        aExists || bExists
+          ? `${pairing.playerA} / ${pairing.playerB}`
+          : `${pairing.playerA} / ${pairing.playerB}`,
     };
   });
 
   const bracket = make32SeedBracket(teams);
 
+  const leftR32 = bracket.r32.slice(0, 8);
+  const rightR32 = bracket.r32.slice(8);
+
+  const leftR16 = bracket.r16.slice(0, 4);
+  const rightR16 = bracket.r16.slice(4);
+
+  const leftQF = bracket.qf.slice(0, 2);
+  const rightQF = bracket.qf.slice(2);
+
+  const leftSF = bracket.sf.slice(0, 1);
+  const rightSF = bracket.sf.slice(1);
+
   return (
-    <main
-      style={{
-        padding: 24,
-        fontFamily: "system-ui",
-        maxWidth: 1280,
-        margin: "0 auto",
-      }}
-    >
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "space-between",
-          gap: 12,
-          flexWrap: "wrap",
-          alignItems: "center",
-        }}
-      >
-        <h1 style={{ margin: 0, fontSize: 32, fontWeight: 900 }}>Spring Flynn Bracket</h1>
+    <main className="page">
+      <div className="topBar">
+        <h1>Spring Flynn Bracket</h1>
 
-        <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
-          <a
-            href="/"
-            style={{
-              textDecoration: "none",
-              border: "1px solid #ddd",
-              padding: "10px 14px",
-              borderRadius: 10,
-              color: "#111",
-              background: "#fff",
-              fontWeight: 700,
-            }}
-          >
-            ← Home
-          </a>
-
-          <a
-            href="/roster"
-            style={{
-              textDecoration: "none",
-              border: "1px solid #ddd",
-              padding: "10px 14px",
-              borderRadius: 10,
-              color: "#111",
-              background: "#fff",
-              fontWeight: 700,
-            }}
-          >
-            Roster →
-          </a>
+        <div className="navButtons">
+          <a href="/">← Home</a>
+          <a href="/roster">Roster →</a>
         </div>
       </div>
 
-      <p style={{ marginTop: 10, color: "#666", fontWeight: 500 }}>
-        32 seeded teams with combined team handicap from A player + B player.
-      </p>
+      <p className="subText">32 seeded teams. Card layout styled like a TV bracket board.</p>
 
-      <div
-        style={{
-          marginTop: 14,
-          borderRadius: 14,
-          overflowX: "auto",
-          border: "1px solid #e7e1d7",
-          background: "#111",
-        }}
-      >
-        <div
-          style={{
-            minWidth: 1200,
-            display: "grid",
-            gridTemplateColumns: "repeat(5, minmax(220px, 1fr))",
-            gap: 14,
-            padding: 14,
-            background: "linear-gradient(135deg, #111, #2b2b2b)",
-            color: "#fff",
-          }}
-        >
-          <div style={{ display: "grid", gap: 10, alignContent: "start" }}>
-            <div style={{ fontWeight: 900, fontSize: 16, marginBottom: 4 }}>Round of 32</div>
-            {bracket.r32.map((m) => (
-              <MatchCard key={m.id} title={m.id} a={m.a} b={m.b} />
-            ))}
+      <div className="boardWrap">
+        <div className="board">
+          <div className="regionTitle leftTitle">LEFT</div>
+          <div className="regionTitle rightTitle">RIGHT</div>
+
+          <div className="leftSide">
+            <div className="round round32">
+              {leftR32.map((m) => (
+                <div key={m.id} className="cardSlot">
+                  <MatchCard match={m} />
+                  <Connector side="left" variant="short" />
+                </div>
+              ))}
+            </div>
+
+            <div className="round round16">
+              {leftR16.map((m) => (
+                <div key={m.id} className="cardSlot offset16">
+                  <MatchCard match={m} />
+                  <Connector side="left" variant="medium" />
+                </div>
+              ))}
+            </div>
+
+            <div className="round round8">
+              {leftQF.map((m) => (
+                <div key={m.id} className="cardSlot offset8">
+                  <MatchCard match={m} />
+                  <Connector side="left" variant="long" />
+                </div>
+              ))}
+            </div>
+
+            <div className="round round4">
+              {leftSF.map((m) => (
+                <div key={m.id} className="cardSlot offset4">
+                  <MatchCard match={m} compact />
+                  <Connector side="left" variant="long" />
+                </div>
+              ))}
+            </div>
           </div>
 
-          <div style={{ display: "grid", gap: 10, alignContent: "start" }}>
-            <div style={{ fontWeight: 900, fontSize: 16, marginBottom: 4 }}>Round of 16</div>
-            {bracket.r16.map((m) => (
-              <MatchCard key={m.id} title={m.id} a={m.a} b={m.b} />
-            ))}
+          <div className="centerColumn">
+            <div className="finalSlot">
+              <div className="finalLabel">CHAMPIONSHIP</div>
+              <MatchCard match={bracket.final[0]} compact />
+            </div>
           </div>
 
-          <div style={{ display: "grid", gap: 10, alignContent: "start" }}>
-            <div style={{ fontWeight: 900, fontSize: 16, marginBottom: 4 }}>Quarterfinals</div>
-            {bracket.qf.map((m) => (
-              <MatchCard key={m.id} title={m.id} a={m.a} b={m.b} />
-            ))}
-          </div>
+          <div className="rightSide">
+            <div className="round round4">
+              {rightSF.map((m) => (
+                <div key={m.id} className="cardSlot offset4 rightCard">
+                  <Connector side="right" variant="long" />
+                  <MatchCard match={m} compact />
+                </div>
+              ))}
+            </div>
 
-          <div style={{ display: "grid", gap: 10, alignContent: "start" }}>
-            <div style={{ fontWeight: 900, fontSize: 16, marginBottom: 4 }}>Semifinals</div>
-            {bracket.sf.map((m) => (
-              <MatchCard key={m.id} title={m.id} a={m.a} b={m.b} />
-            ))}
-          </div>
+            <div className="round round8">
+              {rightQF.map((m) => (
+                <div key={m.id} className="cardSlot offset8 rightCard">
+                  <Connector side="right" variant="long" />
+                  <MatchCard match={m} />
+                </div>
+              ))}
+            </div>
 
-          <div style={{ display: "grid", gap: 10, alignContent: "start" }}>
-            <div style={{ fontWeight: 900, fontSize: 16, marginBottom: 4 }}>Final</div>
-            {bracket.final.map((m) => (
-              <MatchCard key={m.id} title={m.id} a={m.a} b={m.b} />
-            ))}
+            <div className="round round16">
+              {rightR16.map((m) => (
+                <div key={m.id} className="cardSlot offset16 rightCard">
+                  <Connector side="right" variant="medium" />
+                  <MatchCard match={m} />
+                </div>
+              ))}
+            </div>
+
+            <div className="round round32">
+              {rightR32.map((m) => (
+                <div key={m.id} className="cardSlot rightCard">
+                  <Connector side="right" variant="short" />
+                  <MatchCard match={m} />
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </div>
+
+      <style>{`
+        .page {
+          padding: 24px;
+          font-family: system-ui;
+          max-width: 1600px;
+          margin: 0 auto;
+          color: #111;
+          background: #efefef;
+          min-height: 100vh;
+        }
+
+        .topBar {
+          display: flex;
+          justify-content: space-between;
+          gap: 12px;
+          flex-wrap: wrap;
+          align-items: center;
+        }
+
+        .topBar h1 {
+          margin: 0;
+          font-size: 34px;
+          font-weight: 900;
+        }
+
+        .navButtons {
+          display: flex;
+          gap: 10px;
+          flex-wrap: wrap;
+        }
+
+        .navButtons a {
+          text-decoration: none;
+          border: 1px solid #d7d7d7;
+          padding: 10px 14px;
+          border-radius: 10px;
+          color: #111;
+          background: #fff;
+          font-weight: 700;
+        }
+
+        .subText {
+          margin: 10px 0 18px;
+          color: #666;
+          font-weight: 500;
+        }
+
+        .boardWrap {
+          overflow-x: auto;
+          border-radius: 14px;
+          border: 1px solid #ddd;
+          background: #ececec;
+        }
+
+        .board {
+          min-width: 1450px;
+          padding: 28px 28px 36px;
+          display: grid;
+          grid-template-columns: 1fr 240px 1fr;
+          gap: 10px;
+          position: relative;
+          background: #ececec;
+        }
+
+        .regionTitle {
+          position: absolute;
+          top: 10px;
+          font-size: 22px;
+          font-weight: 900;
+          letter-spacing: 0.02em;
+          color: #222;
+        }
+
+        .leftTitle {
+          left: 28px;
+        }
+
+        .rightTitle {
+          right: 28px;
+        }
+
+        .leftSide,
+        .rightSide {
+          display: grid;
+          grid-template-columns: 1fr 1fr 1fr 1fr;
+          gap: 18px;
+          align-items: start;
+          margin-top: 44px;
+        }
+
+        .round {
+          display: flex;
+          flex-direction: column;
+        }
+
+        .round32 {
+          padding-top: 0;
+        }
+
+        .round16 {
+          padding-top: 92px;
+        }
+
+        .round8 {
+          padding-top: 184px;
+        }
+
+        .round4 {
+          padding-top: 368px;
+        }
+
+        .cardSlot {
+          position: relative;
+          margin-bottom: 18px;
+        }
+
+        .offset16 {
+          margin-bottom: 110px;
+        }
+
+        .offset8 {
+          margin-bottom: 238px;
+        }
+
+        .offset4 {
+          margin-bottom: 0;
+        }
+
+        .rightCard {
+          display: flex;
+          align-items: center;
+          justify-content: flex-start;
+          gap: 12px;
+        }
+
+        .matchCard {
+          width: 100%;
+          background: #f7f7f7;
+          border: 1px solid #d2d2d2;
+          border-radius: 14px;
+          overflow: hidden;
+          box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        }
+
+        .matchCard.compact {
+          max-width: 220px;
+        }
+
+        .matchHeader {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          padding: 10px 12px;
+          font-size: 12px;
+          font-weight: 800;
+          color: #3a3a3a;
+          background: #fafafa;
+        }
+
+        .matchHeaderRight {
+          color: #666;
+        }
+
+        .matchBody {
+          border-top: 1px solid #ececec;
+        }
+
+        .teamRow {
+          display: grid;
+          grid-template-columns: 28px minmax(0, 1fr);
+          gap: 8px;
+          align-items: center;
+          padding: 8px 12px;
+          background: #f3f3f3;
+        }
+
+        .teamRow + .teamRow {
+          border-top: 1px solid #e8e8e8;
+          background: #f8f8f8;
+        }
+
+        .winnerLike {
+          color: #222;
+          font-weight: 900;
+        }
+
+        .teamSeed {
+          font-size: 13px;
+          color: #666;
+          font-weight: 700;
+          text-align: right;
+        }
+
+        .teamName {
+          font-size: 18px;
+          font-weight: 800;
+          color: #222;
+          line-height: 1.2;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+        }
+
+        .teamName.placeholder {
+          color: #666;
+          font-weight: 700;
+        }
+
+        .matchFooter {
+          text-align: center;
+          padding: 10px 12px;
+          font-size: 12px;
+          font-weight: 800;
+          color: #0a51d0;
+          background: #fdfdfd;
+          border-top: 1px solid #ececec;
+        }
+
+        .connector {
+          position: absolute;
+          top: 50%;
+          width: 20px;
+          height: 2px;
+          background: #c9c9c9;
+          transform: translateY(-50%);
+        }
+
+        .connector.left {
+          right: -18px;
+        }
+
+        .connector.right {
+          left: -18px;
+          position: relative;
+          top: auto;
+          transform: none;
+        }
+
+        .connector.short {
+          width: 18px;
+        }
+
+        .connector.medium {
+          width: 22px;
+        }
+
+        .connector.long {
+          width: 26px;
+        }
+
+        .centerColumn {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          margin-top: 44px;
+        }
+
+        .finalSlot {
+          width: 100%;
+          max-width: 260px;
+        }
+
+        .finalLabel {
+          text-align: center;
+          font-size: 14px;
+          font-weight: 900;
+          margin-bottom: 12px;
+          color: #222;
+          letter-spacing: 0.04em;
+        }
+
+        @media (max-width: 1100px) {
+          .board {
+            min-width: 100%;
+            grid-template-columns: 1fr;
+          }
+
+          .regionTitle,
+          .centerColumn,
+          .rightSide {
+            position: static;
+          }
+
+          .leftSide {
+            display: block;
+            margin-top: 20px;
+          }
+
+          .round16,
+          .round8,
+          .round4 {
+            padding-top: 0;
+          }
+
+          .cardSlot,
+          .offset16,
+          .offset8 {
+            margin-bottom: 16px;
+          }
+
+          .rightSide {
+            display: none;
+          }
+
+          .matchCard.compact {
+            max-width: none;
+          }
+        }
+      `}</style>
     </main>
   );
 }
