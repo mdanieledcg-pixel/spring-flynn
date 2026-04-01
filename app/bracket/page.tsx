@@ -1,4 +1,4 @@
-import { PAIRINGS } from "@/app/lib/pairings";
+import { PAIRINGS } from "../lib/pairings";
 
 type Player = {
   name: string;
