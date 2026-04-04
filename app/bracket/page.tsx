@@ -176,7 +176,7 @@ function MatchCard({
     <div className={`matchCard ${compact ? "compact" : ""}`}>
       {showScores && (
         <div className="matchHeader">
-          <span>{typeof match.aScore === "string" ? match.aScore : "Final"}</span>
+          <span>Final</span>
         </div>
       )}
 
