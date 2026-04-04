@@ -327,10 +327,66 @@ const mutedText: React.CSSProperties = { color: "rgba(255,255,255,0.85)" };
 </section>
 
       {/* Payouts */}
-      
-<section className="infoCard">
-  <h2>Payouts</h2>
+      <style>{`
+  .tableWrap {
+    width: 100%;
+    overflow-x: auto;
+    margin-top: 14px;
+  }
 
+  .payoutTable {
+    width: 100%;
+    min-width: 680px;
+    border-collapse: collapse;
+    background: rgba(255,255,255,0.96);
+    border-radius: 14px;
+    overflow: hidden;
+  }
+
+  .payoutTable th,
+  .payoutTable td {
+    padding: 12px 14px;
+    text-align: left;
+    border-bottom: 1px solid #e7e7e7;
+    font-size: 15px;
+    color: #111;
+  }
+
+  .payoutTable th {
+    font-weight: 900;
+    background: #f7f7f7;
+    white-space: nowrap;
+  }
+
+  .payoutTable td {
+    font-weight: 700;
+  }
+
+  .totalRow td {
+    font-weight: 900;
+    background: #fafafa;
+  }
+
+  @media (max-width: 700px) {
+    .payoutTable th,
+    .payoutTable td {
+      padding: 10px 12px;
+      font-size: 13px;
+    }
+  }
+`}</style>
+      
+<section
+  style={{
+    ...glassCard,
+    marginTop: 24,
+    padding: 22,
+  }}
+>
+  <h2 style={{ margin: 0, fontSize: 28, fontWeight: 900 }}>
+    Payouts
+  </h2>
+  
   <div className="tableWrap">
     <table className="payoutTable">
       <thead>
