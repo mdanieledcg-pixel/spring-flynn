@@ -327,44 +327,52 @@ const mutedText: React.CSSProperties = { color: "rgba(255,255,255,0.85)" };
 </section>
 
       {/* Payouts */}
-      <style>{`
+    <style>{`
   .tableWrap {
     width: 100%;
     overflow-x: auto;
-    margin-top: 14px;
+    margin-top: 16px;
   }
 
   .payoutTable {
     width: 100%;
     min-width: 680px;
-    border-collapse: collapse;
-    background: rgba(255,255,255,0.96);
-    border-radius: 14px;
+    border-collapse: separate;
+    border-spacing: 0;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 12px;
     overflow: hidden;
   }
 
   .payoutTable th,
   .payoutTable td {
-    padding: 12px 14px;
+    padding: 14px 16px;
     text-align: left;
-    border-bottom: 1px solid #e7e7e7;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.12);
     font-size: 15px;
-    color: #111;
   }
 
   .payoutTable th {
     font-weight: 900;
-    background: #f7f7f7;
+    color: #ffffff;
+    background: rgba(255, 255, 255, 0.08);
     white-space: nowrap;
   }
 
   .payoutTable td {
     font-weight: 700;
+    color: rgba(255, 255, 255, 0.92);
+  }
+
+  .payoutTable tbody tr:last-child td {
+    border-bottom: none;
   }
 
   .totalRow td {
     font-weight: 900;
-    background: #fafafa;
+    background: rgba(255, 255, 255, 0.08);
+    color: #ffffff;
   }
 
   @media (max-width: 700px) {
@@ -383,10 +391,17 @@ const mutedText: React.CSSProperties = { color: "rgba(255,255,255,0.85)" };
     padding: 22,
   }}
 >
-  <h2 style={{ margin: 0, fontSize: 28, fontWeight: 900 }}>
+  <h2
+    style={{
+      margin: 0,
+      fontSize: 28,
+      fontWeight: 900,
+      color: "#f5f5f5",
+    }}
+  >
     Payouts
   </h2>
-  
+
   <div className="tableWrap">
     <table className="payoutTable">
       <thead>
