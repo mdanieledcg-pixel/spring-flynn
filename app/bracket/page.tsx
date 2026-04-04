@@ -16,8 +16,8 @@ type Match = {
   id: string;
   a: Team;
   b: Team;
-  aScore?: number | null;
-  bScore?: number | null;
+  aScore?: string | number | null;
+bScore?: string | number | null;
   winnerSeed?: number | null;
 };
 
@@ -64,8 +64,8 @@ function make32SeedBracket(teams: Team[]) {
       id: `R32-${matchNumber}`,
       a: getTeam(a),
       b: getTeam(b),
-      aScore: 1,
-      bScore: 0,
+      aScore: "1 Up",
+      bScore: null,
       winnerSeed: 6,
     };
   }
@@ -80,49 +80,56 @@ function make32SeedBracket(teams: Team[]) {
   };
 });
 
-  const winner = (matchId: string): Team => ({
+const getMatchWinner = (match: Match): Team => {
+  if (typeof match.winnerSeed === "number") {
+    if (match.a.seed === match.winnerSeed) return match.a;
+    if (match.b.seed === match.winnerSeed) return match.b;
+  }
+
+  return {
     seed: 0,
-    playerA: `Winner of ${matchId}`,
+    playerA: `Winner of ${match.id}`,
     playerB: "",
-  });
+  };
+};
 
-  const r16: Match[] = Array.from({ length: 8 }).map((_, i) => ({
-    id: `R16-${i + 1}`,
-    a: winner(r32[i * 2].id),
-    b: winner(r32[i * 2 + 1].id),
+ const r16: Match[] = Array.from({ length: 8 }).map((_, i) => ({
+  id: `R16-${i + 1}`,
+  a: getMatchWinner(r32[i * 2]),
+  b: getMatchWinner(r32[i * 2 + 1]),
+  aScore: null,
+  bScore: null,
+  winnerSeed: null,
+}));
+
+const qf: Match[] = Array.from({ length: 4 }).map((_, i) => ({
+  id: `QF-${i + 1}`,
+  a: getMatchWinner(r16[i * 2]),
+  b: getMatchWinner(r16[i * 2 + 1]),
+  aScore: null,
+  bScore: null,
+  winnerSeed: null,
+}));
+
+const sf: Match[] = Array.from({ length: 2 }).map((_, i) => ({
+  id: `SF-${i + 1}`,
+  a: getMatchWinner(qf[i * 2]),
+  b: getMatchWinner(qf[i * 2 + 1]),
+  aScore: null,
+  bScore: null,
+  winnerSeed: null,
+}));
+
+const final: Match[] = [
+  {
+    id: "FINAL",
+    a: getMatchWinner(sf[0]),
+    b: getMatchWinner(sf[1]),
     aScore: null,
     bScore: null,
     winnerSeed: null,
-  }));
-
-  const qf: Match[] = Array.from({ length: 4 }).map((_, i) => ({
-    id: `QF-${i + 1}`,
-    a: winner(r16[i * 2].id),
-    b: winner(r16[i * 2 + 1].id),
-    aScore: null,
-    bScore: null,
-    winnerSeed: null,
-  }));
-
-  const sf: Match[] = Array.from({ length: 2 }).map((_, i) => ({
-    id: `SF-${i + 1}`,
-    a: winner(qf[i * 2].id),
-    b: winner(qf[i * 2 + 1].id),
-    aScore: null,
-    bScore: null,
-    winnerSeed: null,
-  }));
-
-  const final: Match[] = [
-    {
-      id: "FINAL",
-      a: winner(sf[0].id),
-      b: winner(sf[1].id),
-      aScore: null,
-      bScore: null,
-      winnerSeed: null,
-    },
-  ];
+  },
+];
 
   return { r32, r16, qf, sf, final };
 }
@@ -134,7 +141,7 @@ function TeamRow({
 }: {
   team: Team;
   bold?: boolean;
-  score?: number | null;
+  score?: string | number | null;
 }) {
   const isPlaceholder = team.seed === 0 || team.playerA === "TBD";
 
@@ -147,8 +154,7 @@ function TeamRow({
         {team.playerB ? <div className="playerLine">{team.playerB}</div> : <div className="playerLine emptyLine">\u00A0</div>}
       </div>
 
-      {typeof score === "number" ? <div className="teamScore">{score}</div> : null}
-    </div>
+      {score !== null && score !== undefined ? <div className="teamScore">{score}</div> : null}    </div>
   );
 }
 
@@ -162,15 +168,15 @@ function MatchCard({
   const isPlaceholder = match.a.seed === 0 || match.b.seed === 0;
 
   const showScores =
-    typeof match.aScore === "number" &&
-    typeof match.bScore === "number" &&
+    match.aScore !== null &&
+    match.aScore !== undefined &&
     typeof match.winnerSeed === "number";
 
   return (
     <div className={`matchCard ${compact ? "compact" : ""}`}>
       {showScores && (
         <div className="matchHeader">
-          <span>Final</span>
+          <span>{typeof match.aScore === "string" ? match.aScore : "Final"}</span>
         </div>
       )}
 
@@ -597,8 +603,13 @@ export default async function BracketPage() {
           visibility: hidden;
         }
 
-        .teamScore {
-          display: none;
+       .teamScore {
+          font-size: 12px;
+          font-weight: 800;
+          color: #444;
+          justify-self: end;
+          align-self: center;
+          white-space: nowrap;
         }
 
         .connector {
