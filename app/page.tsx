@@ -326,7 +326,62 @@ const mutedText: React.CSSProperties = { color: "rgba(255,255,255,0.85)" };
   </div>
 </section>
 
+      {/* Payouts */}
+      
+<section className="infoCard">
+  <h2>Payouts</h2>
 
+  <div className="tableWrap">
+    <table className="payoutTable">
+      <thead>
+        <tr>
+          <th>Round</th>
+          <th>Winning Teams</th>
+          <th>Team Payout</th>
+          <th>Individual Payout</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Rd 1</td>
+          <td>16</td>
+          <td>$150.00</td>
+          <td>$75.00</td>
+        </tr>
+        <tr>
+          <td>Rd 2</td>
+          <td>8</td>
+          <td>$300.00</td>
+          <td>$150.00</td>
+        </tr>
+        <tr>
+          <td>Quarterfinals</td>
+          <td>4</td>
+          <td>$380.00</td>
+          <td>$190.00</td>
+        </tr>
+        <tr>
+          <td>Semifinals</td>
+          <td>2</td>
+          <td>$550.00</td>
+          <td>$275.00</td>
+        </tr>
+        <tr>
+          <td>Champion</td>
+          <td>1</td>
+          <td>$900.00</td>
+          <td>$450.00</td>
+        </tr>
+        <tr className="totalRow">
+          <td>Total</td>
+          <td></td>
+          <td>$2,280.00</td>
+          <td>$1,140.00</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
 
 {/* EXPECTED SCHEDULE */}
 <section
