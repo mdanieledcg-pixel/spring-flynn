@@ -192,9 +192,10 @@ function MatchCard({
   const isPlaceholder = match.a.seed === 0 || match.b.seed === 0;
 
   const showScores =
-    match.aScore !== null &&
-    match.aScore !== undefined &&
-    typeof match.winnerSeed === "number";
+  (match.aScore !== null && match.aScore !== undefined) ||
+  (match.bScore !== null && match.bScore !== undefined)
+    ? typeof match.winnerSeed === "number"
+    : false;
 
   return (
     <div className={`matchCard ${compact ? "compact" : ""}`}>
