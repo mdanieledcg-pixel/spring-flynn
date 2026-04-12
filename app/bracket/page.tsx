@@ -576,17 +576,20 @@ export default async function BracketPage() {
         }
 
         .teamRow {
+          position: relative;
           display: grid;
           grid-template-columns: 22px minmax(0, 1fr);
           gap: 6px;
           align-items: start;
-          padding: 8px 10px;
+          padding: 8px 56px 8px 10px;
           background: #f3f3f3;
         }
 
-        .teamRow + .teamRow {
-          border-top: 1px solid #e8e8e8;
-          background: #f8f8f8;
+        .teamRow {
+          grid-template-columns: 24px minmax(0, 1fr);
+          gap: 8px;
+          align-items: center;
+          padding: 9px 56px 9px 10px;
         }
 
         .winnerLike {
@@ -629,13 +632,15 @@ export default async function BracketPage() {
         }
 
        .teamScore {
+          position: absolute;
+          right: 10px;
+          top: 50%;
+          transform: translateY(-50%);
           font-size: 12px;
           font-weight: 800;
           color: #444;
-          justify-self: end;
-          align-self: center;
           white-space: nowrap;
-        }
+        }        
 
         .connector {
           position: absolute;
