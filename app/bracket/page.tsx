@@ -57,8 +57,33 @@ function make32SeedBracket(teams: Team[]) {
 
   const r32: Match[] = r32Pairs.map(([a, b], i) => {
   const matchNumber = i + 1;
+  // Pasternack / Weychert win 4 and 3
+  if (matchNumber === 6) {
+    return {
+      id: `R32-${matchNumber}`,
+      a: getTeam(a),
+      b: getTeam(b),
+      aScore: "4 and 3",
+      bScore: null,
+      winnerSeed: 13,
+    };
+  }
+    
+  // Kingkiner / McHale win 1 Up
+  if (matchNumber === 11) {
+    return {
+      id: `R32-${matchNumber}`,
+      a: getTeam(a),
+      b: getTeam(b),
+      aScore: "1 Up",
+      bScore: null,
+      winnerSeed: 7,
+    };
+  }
 
-  // Dolan / Davis win 4 and 3
+  
+    
+    // Dolan / Davis win 4 and 3
   if (matchNumber === 7) {
     return {
       id: `R32-${matchNumber}`,
@@ -575,7 +600,7 @@ export default async function BracketPage() {
           border-top: none;
         }
 
-        .teamRow {
+       .teamRow {
           position: relative;
           display: grid;
           grid-template-columns: 22px minmax(0, 1fr);
@@ -583,13 +608,6 @@ export default async function BracketPage() {
           align-items: start;
           padding: 8px 56px 8px 10px;
           background: #f3f3f3;
-        }
-
-        .teamRow {
-          grid-template-columns: 24px minmax(0, 1fr);
-          gap: 8px;
-          align-items: center;
-          padding: 9px 56px 9px 10px;
         }
 
         .winnerLike {
