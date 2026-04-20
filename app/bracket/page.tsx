@@ -57,6 +57,8 @@ function make32SeedBracket(teams: Team[]) {
 
   const r32: Match[] = r32Pairs.map(([a, b], i) => {
   const matchNumber = i + 1;
+    
+    
   // Pasternack / Weychert win 4 and 3
   if (matchNumber === 6) {
     return {
@@ -92,6 +94,18 @@ function make32SeedBracket(teams: Team[]) {
       aScore: null,
       bScore: "4 and 3",
       winnerSeed: 28,
+    };
+  }
+
+  // Murray / Daniele win 1 Up
+  if (matchNumber === 8) {
+    return {
+      id: `R32-${matchNumber}`,
+      a: getTeam(a),
+      b: getTeam(b),
+      aScore: "1 Up",
+      bScore: null,
+      winnerSeed: 12,
     };
   }
     
