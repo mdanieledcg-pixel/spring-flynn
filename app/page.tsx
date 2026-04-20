@@ -291,7 +291,9 @@ const mutedText: React.CSSProperties = { color: "rgba(255,255,255,0.85)" };
       <div><b>1</b>&nbsp;&nbsp;Follow USGA rules.</div>
 
       <div style={{ marginTop: 10 }}><b>2</b>&nbsp;&nbsp;85% handicap allowance.</div>
-      <div style={{ paddingLeft: 28 }}><b>2.1</b>&nbsp;&nbsp;Hole handicap caps out at 1.5 strokes on a hole per player</div>
+      <div style={{ paddingLeft: 28 }}><b>2.1</b>&nbsp;&nbsp;Hole handicap caps out at 1.5 strokes on a hole per player.</div>
+      <div style={{ paddingLeft: 28 }}><b>2.2</b>&nbsp;&nbsp;It is a rolling handicap, with matches played off the low man of the foursome.</div>
+  
 
       <div style={{ marginTop: 10 }}>
         <b>3</b>&nbsp;&nbsp;Teams will be determined by blind draw on a date TBD. Each team will consist of one A player and one B player.
