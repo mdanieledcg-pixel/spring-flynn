@@ -69,6 +69,18 @@ function make32SeedBracket(teams: Team[]) {
       winnerSeed: 17,
     };
   }
+
+  // Edwards / Roach win 1 Up
+  if (matchNumber === 3) {
+    return {
+      id: `R32-${matchNumber}`,
+      a: getTeam(a),
+      b: getTeam(b),
+      aScore: null,
+      bScore: "1 Up",
+      winnerSeed: 25,
+    };
+  }
     
   // Pasternack / Weychert win 4 and 3
   if (matchNumber === 6) {
@@ -131,6 +143,18 @@ function make32SeedBracket(teams: Team[]) {
       winnerSeed: 2,
     };
   }
+
+  // Lyden / Law win 3&2
+  if (matchNumber === 14) {
+    return {
+      id: `R32-${matchNumber}`,
+      a: getTeam(a),
+      b: getTeam(b),
+      aScore: null,
+      bScore: "3&2",
+      winnerSeed: 19,
+    };
+  }  
     
   // Morse / Sheahan win first matchup 1 Up
   if (matchNumber === 15) {
@@ -143,6 +167,18 @@ function make32SeedBracket(teams: Team[]) {
       winnerSeed: 6,
     };
   }
+    
+   // Zamorski / Prendergast win 1 Up
+  if (matchNumber === 16) {
+    return {
+      id: `R32-${matchNumber}`,
+      a: getTeam(a),
+      b: getTeam(b),
+      aScore: null,
+      bScore: "1 Up",
+      winnerSeed: 22,
+    };
+  } 
 
   return {
     id: `R32-${matchNumber}`,
