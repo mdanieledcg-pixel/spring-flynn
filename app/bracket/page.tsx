@@ -106,7 +106,17 @@ function make32SeedBracket(teams: Team[]) {
     };
   }
 
-  
+  // Sutcliffe / Purdy win 3&2
+  if (matchNumber === 12) {
+    return {
+      id: `R32-${matchNumber}`,
+      a: getTeam(a),
+      b: getTeam(b),
+      aScore: "3&2",
+      bScore: null,
+      winnerSeed: 10,
+    };
+  }
     
     // Dolan / Davis win 4 and 3
   if (matchNumber === 7) {
@@ -141,6 +151,18 @@ function make32SeedBracket(teams: Team[]) {
       aScore: "1 Up",
       bScore: null,
       winnerSeed: 2,
+    };
+  }
+
+   // Swain / Donahue win 4 and 3
+  if (matchNumber === 10) {
+    return {
+      id: `R32-${matchNumber}`,
+      a: getTeam(a),
+      b: getTeam(b),
+      aScore: "4 and 3",
+      bScore: null,
+      winnerSeed: 15,
     };
   }
 
