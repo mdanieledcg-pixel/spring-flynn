@@ -650,48 +650,55 @@ export default async function BracketPage() {
           width: 260px;
           min-width: 260px;
           max-width: 260px;
+          height: 126px;
           background: #f7f7f7;
           border: 1px solid #d2d2d2;
           border-radius: 14px;
           overflow: hidden;
           box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+          position: relative;
         }
 
         .matchCard.compact {
           width: 260px;
           min-width: 260px;
           max-width: 260px;
+          height: 126px;
         }
 
         .matchHeader {
+          position: absolute;
+          top: 0;
+          left: 0;
+          right: 0;
+          height: 30px;
           display: flex;
           justify-content: flex-start;
           align-items: center;
-          padding: 7px 10px;
+          padding: 0 10px;
           font-size: 11px;
           font-weight: 800;
           color: #3a3a3a;
           background: #fafafa;
-          min-height: 30px;
+          border-bottom: 1px solid #ececec;
+          z-index: 2;
         }
 
         .matchBody {
-          border-top: 1px solid #ececec;
-        }
-
-        .matchBody.noHeader {
           border-top: none;
+          height: 100%;
         }
 
-       .teamRow {
-          position: relative;
-          display: grid;
-          grid-template-columns: 22px minmax(0, 1fr);
-          gap: 6px;
-          align-items: start;
-          padding: 8px 56px 8px 10px;
-          background: #f3f3f3;
-        }
+      .matchCard:has(.matchHeader) .matchBody {
+        padding-top: 30px;
+      }
+
+      .teamRow {
+        grid-template-columns: 24px minmax(0, 1fr);
+        gap: 8px;
+        align-items: center;
+        padding: 9px 56px 9px 10px;
+      }
 
         .winnerLike {
           color: #222;
