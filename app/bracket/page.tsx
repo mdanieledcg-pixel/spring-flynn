@@ -614,7 +614,7 @@ export default async function BracketPage() {
         }
 
         .round8 {
-          padding-top: 240px;
+          padding-top: 250px;
         }
 
         .round4 {
