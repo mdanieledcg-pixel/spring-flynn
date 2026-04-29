@@ -81,6 +81,30 @@ function make32SeedBracket(teams: Team[]) {
       winnerSeed: 25,
     };
   }
+
+    // Edwards / Roach win 1 Up
+if (matchNumber === 3) {
+  return {
+    id: `R32-${matchNumber}`,
+    a: getTeam(a),
+    b: getTeam(b),
+    aScore: null,
+    bScore: "1 Up",
+    winnerSeed: 25,
+  };
+}
+
+  // Albright / Carroll win 5 and 3
+  if (matchNumber === 4) {
+    return {
+      id: `R32-${matchNumber}`,
+      a: getTeam(a),
+      b: getTeam(b),
+      aScore: null,
+      bScore: "5 and 3",
+      winnerSeed: 24,
+    };
+  }
     
   // Pasternack / Weychert win 4 and 3
   if (matchNumber === 6) {
