@@ -105,6 +105,18 @@ if (matchNumber === 3) {
       winnerSeed: 24,
     };
   }
+
+  // Smith / Hilles win 1 Up F/20
+  if (matchNumber === 5) {
+    return {
+      id: `R32-${matchNumber}`,
+      a: getTeam(a),
+      b: getTeam(b),
+      aScore: null,
+      bScore: "1 Up F/20",
+      winnerSeed: 29,
+    };
+  }
     
   // Pasternack / Weychert win 4 and 3
   if (matchNumber === 6) {
