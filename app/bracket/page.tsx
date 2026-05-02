@@ -270,6 +270,15 @@ const getMatchWinner = (match: Match): Team => {
   winnerSeed: null,
 }));
 
+  // Zamorski / Prendergast win Round of 16 (3 and 2)
+  r16[7] = {
+    id: r16[7].id,
+    a: r16[7].a,
+    b: r16[7].b,
+    aScore: null,
+    bScore: "3 and 2",
+    winnerSeed: 22,
+  };
 const qf: Match[] = Array.from({ length: 4 }).map((_, i) => ({
   id: `QF-${i + 1}`,
   a: getMatchWinner(r16[i * 2]),
