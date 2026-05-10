@@ -130,30 +130,6 @@ if (matchNumber === 3) {
     };
   }
     
-  // Kingkiner / McHale win 1 Up
-  if (matchNumber === 11) {
-    return {
-      id: `R32-${matchNumber}`,
-      a: getTeam(a),
-      b: getTeam(b),
-      aScore: "1 Up",
-      bScore: null,
-      winnerSeed: 7,
-    };
-  }
-
-  // Sutcliffe / Purdy win 3&2
-  if (matchNumber === 12) {
-    return {
-      id: `R32-${matchNumber}`,
-      a: getTeam(a),
-      b: getTeam(b),
-      aScore: "3&2",
-      bScore: null,
-      winnerSeed: 10,
-    };
-  }
-    
     // Dolan / Davis win 4 and 3
   if (matchNumber === 7) {
     return {
@@ -201,6 +177,42 @@ if (matchNumber === 3) {
       winnerSeed: 15,
     };
   }
+
+    // Kingkiner / McHale win 1 Up
+  if (matchNumber === 11) {
+    return {
+      id: `R32-${matchNumber}`,
+      a: getTeam(a),
+      b: getTeam(b),
+      aScore: "1 Up",
+      bScore: null,
+      winnerSeed: 7,
+    };
+  }
+
+  // Sutcliffe / Purdy win 3&2
+  if (matchNumber === 12) {
+    return {
+      id: `R32-${matchNumber}`,
+      a: getTeam(a),
+      b: getTeam(b),
+      aScore: "3&2",
+      bScore: null,
+      winnerSeed: 10,
+    };
+  }
+
+   // Latos / Cangelosi win 5 & 4
+    if (matchNumber === 13) {
+      return {
+        id: `R32-${matchNumber}`,
+        a: getTeam(a),
+        b: getTeam(b),
+        aScore: null,
+        bScore: "5 & 4",
+        winnerSeed: 30,
+      };
+    }  
 
   // Lyden / Law win 3&2
   if (matchNumber === 14) {
