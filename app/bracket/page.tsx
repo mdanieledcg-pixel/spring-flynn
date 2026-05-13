@@ -273,7 +273,7 @@ const getMatchWinner = (match: Match): Team => {
   };
 };
 
- const r16: Match[] = Array.from({ length: 8 }).map((_, i) => ({
+const r16: Match[] = Array.from({ length: 8 }).map((_, i) => ({
   id: `R16-${i + 1}`,
   a: getMatchWinner(r32[i * 2]),
   b: getMatchWinner(r32[i * 2 + 1]),
@@ -282,15 +282,26 @@ const getMatchWinner = (match: Match): Team => {
   winnerSeed: null,
 }));
 
-  // Zamorski / Prendergast win Round of 16 (3 and 2)
-  r16[7] = {
-    id: r16[7].id,
-    a: r16[7].a,
-    b: r16[7].b,
-    aScore: null,
-    bScore: "3 and 2",
-    winnerSeed: 22,
-  };
+// Kingkiner / McHale win Round of 16 (1 Up)
+r16[5] = {
+  id: r16[5].id,
+  a: r16[5].a,
+  b: r16[5].b,
+  aScore: "1 Up",
+  bScore: null,
+  winnerSeed: 7,
+};
+
+// Zamorski / Prendergast win Round of 16 (3 and 2)
+r16[7] = {
+  id: r16[7].id,
+  a: r16[7].a,
+  b: r16[7].b,
+  aScore: null,
+  bScore: "3 and 2",
+  winnerSeed: 22,
+};
+  
 const qf: Match[] = Array.from({ length: 4 }).map((_, i) => ({
   id: `QF-${i + 1}`,
   a: getMatchWinner(r16[i * 2]),
