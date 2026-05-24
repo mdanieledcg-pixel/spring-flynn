@@ -292,6 +292,16 @@ r16[5] = {
   winnerSeed: 7,
 };
 
+// Thompson / Siniscalchi win Round of 16 (1 Up F/19)
+r16[0] = {
+  id: r16[0].id,
+  a: r16[0].a,
+  b: r16[0].b,
+  aScore: null,
+  bScore: "1 Up F/19",
+  winnerSeed: 17,
+};
+  
 // Zamorski / Prendergast win Round of 16 (3 and 2)
 r16[7] = {
   id: r16[7].id,
