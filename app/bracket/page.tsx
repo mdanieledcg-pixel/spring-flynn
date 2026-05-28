@@ -311,6 +311,26 @@ r16[7] = {
   bScore: "3 and 2",
   winnerSeed: 22,
 };
+
+ // Albright / Carroll win Round of 16 (3 and 2)
+r16[1] = {
+  id: r16[1].id,
+  a: r16[1].a,
+  b: r16[1].b,
+  aScore: null,
+  bScore: "3 and 2",
+  winnerSeed: 24,
+};
+
+// Dolan / Davis win Round of 16 (1 Up)
+r16[3] = {
+  id: r16[3].id,
+  a: r16[3].a,
+  b: r16[3].b,
+  aScore: null,
+  bScore: "1 Up",
+  winnerSeed: 28,
+};
   
 const qf: Match[] = Array.from({ length: 4 }).map((_, i) => ({
   id: `QF-${i + 1}`,
