@@ -292,6 +292,16 @@ r16[5] = {
   winnerSeed: 7,
 };
 
+// Latos / Cangelosi win Round of 16 (4 and 3)
+r16[6] = {
+  id: r16[6].id,
+  a: r16[6].a,
+  b: r16[6].b,
+  aScore: "4 and 3",
+  bScore: null,
+  winnerSeed: 30,
+};
+  
 // Thompson / Siniscalchi win Round of 16 (1 Up F/19)
 r16[0] = {
   id: r16[0].id,
