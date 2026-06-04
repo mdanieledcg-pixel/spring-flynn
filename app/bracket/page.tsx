@@ -332,6 +332,16 @@ r16[1] = {
   winnerSeed: 24,
 };
 
+  // Pasternack / Weychert win Round of 16 (3 and 2)
+r16[2] = {
+  id: r16[2].id,
+  a: r16[2].a,
+  b: r16[2].b,
+  aScore: "3 and 2",
+  bScore: null,
+  winnerSeed: 13,
+};
+
 // Dolan / Davis win Round of 16 (1 Up)
 r16[3] = {
   id: r16[3].id,
