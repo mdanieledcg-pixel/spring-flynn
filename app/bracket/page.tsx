@@ -337,8 +337,8 @@ r16[2] = {
   id: r16[2].id,
   a: r16[2].a,
   b: r16[2].b,
-  aScore: "3 and 2",
-  bScore: null,
+  aScore: null,
+  bScore: 3 "and 2",
   winnerSeed: 13,
 };
 
