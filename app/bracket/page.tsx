@@ -282,27 +282,8 @@ const r16: Match[] = Array.from({ length: 8 }).map((_, i) => ({
   winnerSeed: null,
 }));
 
-// Kingkiner / McHale win Round of 16 (1 Up)
-r16[5] = {
-  id: r16[5].id,
-  a: r16[5].a,
-  b: r16[5].b,
-  aScore: "1 Up",
-  bScore: null,
-  winnerSeed: 7,
-};
 
-// Latos / Cangelosi win Round of 16 (4 and 3)
-r16[6] = {
-  id: r16[6].id,
-  a: r16[6].a,
-  b: r16[6].b,
-  aScore: "4 and 3",
-  bScore: null,
-  winnerSeed: 30,
-};
-  
-// Thompson / Siniscalchi win Round of 16 (1 Up F/19)
+  // Thompson / Siniscalchi win Round of 16 (1 Up F/19)
 r16[0] = {
   id: r16[0].id,
   a: r16[0].a,
@@ -311,18 +292,8 @@ r16[0] = {
   bScore: "1 Up F/19",
   winnerSeed: 17,
 };
-  
-// Zamorski / Prendergast win Round of 16 (3 and 2)
-r16[7] = {
-  id: r16[7].id,
-  a: r16[7].a,
-  b: r16[7].b,
-  aScore: null,
-  bScore: "3 and 2",
-  winnerSeed: 22,
-};
 
- // Albright / Carroll win Round of 16 (3 and 2)
+   // Albright / Carroll win Round of 16 (3 and 2)
 r16[1] = {
   id: r16[1].id,
   a: r16[1].a,
@@ -351,6 +322,49 @@ r16[3] = {
   bScore: null,
   winnerSeed: 28,
 };
+  
+  // Swain / Donahue win Round of 16 (2 and 1)
+r16[4] = {
+  id: r16[4].id,
+  a: r16[4].a,
+  b: r16[4].b,
+  aScore: null,
+  bScore: "2 and 1",
+  winnerSeed: 15,
+};
+
+// Kingkiner / McHale win Round of 16 (1 Up)
+r16[5] = {
+  id: r16[5].id,
+  a: r16[5].a,
+  b: r16[5].b,
+  aScore: "1 Up",
+  bScore: null,
+  winnerSeed: 7,
+};
+
+// Latos / Cangelosi win Round of 16 (4 and 3)
+r16[6] = {
+  id: r16[6].id,
+  a: r16[6].a,
+  b: r16[6].b,
+  aScore: "4 and 3",
+  bScore: null,
+  winnerSeed: 30,
+};
+  
+
+// Zamorski / Prendergast win Round of 16 (3 and 2)
+r16[7] = {
+  id: r16[7].id,
+  a: r16[7].a,
+  b: r16[7].b,
+  aScore: null,
+  bScore: "3 and 2",
+  winnerSeed: 22,
+};
+
+
   
 const qf: Match[] = Array.from({ length: 4 }).map((_, i) => ({
   id: `QF-${i + 1}`,
