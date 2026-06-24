@@ -364,6 +364,18 @@ r16[7] = {
   winnerSeed: 22,
 };
 
+  // Quarterfinal results
+
+  // Swain / Donahue beat Kingkiner / McHale 2 Up
+qf[2] = {
+  id: qf[2].id,
+  a: qf[2].a,
+  b: qf[2].b,
+  aScore: "2 Up",
+  bScore: null,
+  winnerSeed: 15,
+};
+
 
   
 const qf: Match[] = Array.from({ length: 4 }).map((_, i) => ({
