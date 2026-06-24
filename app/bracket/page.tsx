@@ -364,7 +364,17 @@ r16[7] = {
   winnerSeed: 22,
 };
 
-  // Quarterfinal results
+  
+const qf: Match[] = Array.from({ length: 4 }).map((_, i) => ({
+  id: `QF-${i + 1}`,
+  a: getMatchWinner(r16[i * 2]),
+  b: getMatchWinner(r16[i * 2 + 1]),
+  aScore: null,
+  bScore: null,
+  winnerSeed: null,
+}));
+
+    // Quarterfinal results
 
   // Swain / Donahue beat Kingkiner / McHale 2 Up
 qf[2] = {
@@ -376,16 +386,6 @@ qf[2] = {
   winnerSeed: 15,
 };
 
-
-  
-const qf: Match[] = Array.from({ length: 4 }).map((_, i) => ({
-  id: `QF-${i + 1}`,
-  a: getMatchWinner(r16[i * 2]),
-  b: getMatchWinner(r16[i * 2 + 1]),
-  aScore: null,
-  bScore: null,
-  winnerSeed: null,
-}));
 
 const sf: Match[] = Array.from({ length: 2 }).map((_, i) => ({
   id: `SF-${i + 1}`,
