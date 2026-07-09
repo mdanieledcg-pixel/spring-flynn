@@ -376,6 +376,16 @@ const qf: Match[] = Array.from({ length: 4 }).map((_, i) => ({
 
     // Quarterfinal results
 
+// Thompson / Siniscalchi win Quarterfinal (6 and 4)
+qf[0] = {
+  id: qf[0].id,
+  a: qf[0].a,
+  b: qf[0].b,
+  aScore: "6 and 4",
+  bScore: null,
+  winnerSeed: 17,
+};
+
   // Pasternack / Weychert win Quarterfinal (4 and 2)
 qf[1] = {
   id: qf[1].id,
@@ -394,6 +404,16 @@ qf[2] = {
   aScore: "2 Up",
   bScore: null,
   winnerSeed: 15,
+};
+
+  // Zamorski / Prendergast win Quarterfinal (3 and 2)
+qf[3] = {
+  id: qf[3].id,
+  a: qf[3].a,
+  b: qf[3].b,
+  aScore: null,
+  bScore: "3 and 2",
+  winnerSeed: 22,
 };
 
 
